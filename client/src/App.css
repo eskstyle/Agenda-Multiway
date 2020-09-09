@@ -1,0 +1,21 @@
+.header{
+  background-color: rgb(36, 196, 36);
+}
+
+.header-titulo{
+  color: white !important;
+  font-weight: bold;
+}
+
+.itens{
+  width: 100%;
+}
+
+.header-itens{
+  color: white !important;
+  font-weight: 600;
+}
+
+.footer-copyright{
+  text-align: center;
+}
