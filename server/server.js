@@ -14,7 +14,7 @@ app.use('/api/buscarUsuario', (req, res,) => {
     // const usuario = "douglas";
 
     connection.query(`SELECT * FROM administradores a WHERE a.usuario = ?`, [usuario], (err, result, fields) => {
-        if(err){
+        if (err) {
             throw err;
         }
         console.log(result);
@@ -26,7 +26,7 @@ app.post('/api/salvarSetor', (req, res) => {
     const nomeSetor = req.body.nomeSetor;
 
     const query = connection.query(`INSERT INTO setor(nome) VALUES(?)`, [nomeSetor, 1], (err, result) => {
-        if(err){
+        if (err) {
             throw err;
         }
 
@@ -37,9 +37,8 @@ app.post('/api/salvarSetor', (req, res) => {
 });
 
 app.get('/api/buscarSetores', (req, res) => {
-
     connection.query(`SELECT * FROM setor`, (err, result) => {
-        if(err){
+        if (err) {
             throw err;
         }
 
@@ -53,7 +52,7 @@ app.post('/api/salvarRamal', (req, res) => {
     const nomePessoa = req.body.nomePessoa
 
     const query = connection.query(`INSERT INTO ramal(ramal, setor_id, nome) VALUES(?, ?, ?)`, [numeroRamal, idSetor, nomePessoa], (err, result) => {
-        if(err){
+        if (err) {
             throw err;
         }
 
@@ -62,6 +61,28 @@ app.post('/api/salvarRamal', (req, res) => {
 
     // IMPRIME O SQL QUE ESTÁ SENDO FEITO
     // res.json(query.sql); 
+});
+
+app.get('/api/buscarRamais', (req, res) => {
+    const query = connection.query(`SELECT r.ramal, r.nome, s.nome as setor FROM ramal r INNER JOIN setor s ON s.id = r.setor_id`, (err, result) => {
+        if (err) {
+            throw err;
+        }
+
+        res.json(result);
+    });
+});
+
+app.post('/api/pesquisar', (req, res) => {
+    const pesquisa = req.body.pesquisar;
+
+    const query = connection.query(`SELECT r.ramal, r.nome, s.nome as setor FROM ramal r INNER JOIN setor s ON r.setor_id = s.id WHERE r.nome LIKE '%` + pesquisa + `%' OR s.nome LIKE '%` + pesquisa + `%'`, (err, result) => {
+        if (err) {
+            throw err;
+        }
+
+        res.json(result);
+    });
 });
 
 app.listen(3080, () => {

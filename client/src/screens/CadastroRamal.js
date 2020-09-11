@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -43,7 +43,7 @@ class CadastroRamal extends React.Component {
                             <Form.Control type="text" placeholder="Digite o número do ramal" name="numeroRamal" />
                         </Form.Group>
                         <Form.Group controlId="formCadastroPessoa">
-                            <Form.Label>Número ramal</Form.Label>
+                            <Form.Label>Nome Pessoa</Form.Label>
                             <Form.Control type="text" placeholder="Digite o nome da pessoa do ramal" name="nomePessoa" />
                         </Form.Group>
                         <Form.Group controlId="formCadastroSetor">

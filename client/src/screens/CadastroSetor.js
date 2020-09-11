@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import { HeaderAdmin } from '../components/Header';
-import {Footer} from '../components/Footer';
+// import {Footer} from '../components/Footer';
 
 class CadastroSetor extends React.Component {
     render() {
