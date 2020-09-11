@@ -2,19 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import CadastroSetor from './screens/CadastroSetor';
-import CadastroRamal from './screens/CadastroRamal';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/" exact={true} component={App} />
-      <Route path="/cadastro-setor" component={CadastroSetor} />
-      <Route path="/cadastro-ramal" component={CadastroRamal} />
-    </Switch>
-  </BrowserRouter>,
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
   document.getElementById('root')
 );
 

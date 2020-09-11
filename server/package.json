@@ -17,6 +17,7 @@
     "mysql": "^2.18.1"
   },
   "devDependencies": {
+    "file-loader": "^6.1.0",
     "nodemon": "^2.0.4"
   }
 }
