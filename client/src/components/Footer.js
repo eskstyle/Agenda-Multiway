@@ -4,7 +4,7 @@ import { FaYoutube } from 'react-icons/fa';
 import { FaLinkedin } from 'react-icons/fa';
 import { FaInstagram } from 'react-icons/fa';
 
-export const Footer = () => {
+const Footer = () => {
 
     return (
         <div className="footer">
@@ -19,3 +19,4 @@ export const Footer = () => {
     );
 };
 
+export default Footer;
