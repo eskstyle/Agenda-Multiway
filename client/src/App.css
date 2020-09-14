@@ -3,11 +3,20 @@ body{
   padding: 0;
   min-height: 100%;
   height: 100%;
+  margin-bottom: 0px;
+}
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .header{
-  background-color: rgb(219, 219, 219);
-  width: 100%;
+  background-color: rgb(63, 194, 63);
+  /* width: 100%;  */
+  height: 50px;
+  flex-shrink: 0;
 }
 
 .header-titulo{
@@ -16,7 +25,7 @@ body{
 }
 
 .logo{
-  width: 230px;
+  width: 150px;
 }
 
 .itens{
@@ -24,27 +33,41 @@ body{
 }
 
 .header-itens{
-  color: rgb(75, 74, 74) !important;
+  /* color: rgb(75, 74, 74) !important; */
+  color: white !important;
   font-weight: bold;
-  margin-left: 20%;
+  text-align: center;
+  margin-left: 1%;
 }
 
 .dropdown-menu-header{
   font-weight: bold;
 }
 
-.dropdown-menu-header a {
-  color: rgb(75, 74, 74) !important;
+.dropdown-menu-header .dropdown-menu{
+  right: 0;
+  left: auto;
+}
+
+.dropdown-menu-header {
+  color: white !important;
+}
+
+.dropdown-menu-header .nav-link {
+  color:white !important;
 }
 
 .footer{
   background-color: green;
   height: 50px;
   width: 100%;
-  /* top: 0%; */
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
+}
+.container{
+  flex: 1 0 auto;
 }
 
 .footer-paragrafo{
@@ -70,6 +93,10 @@ body{
 .titulo{
   text-align: center;
   margin-top: 20px;
+}
+
+.titulo h2{
+  margin-bottom: 2%;
 }
 
 .tabela-ramais{

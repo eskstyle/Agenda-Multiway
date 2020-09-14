@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 // app.use(express.json());
 
-app.use('/api/buscarUsuario', (req, res,) => {
+app.get('/api/buscarUsuario', (req, res,) => {
     const usuario = req.body.usuario;
     // const usuario = "douglas";
 
@@ -17,15 +17,25 @@ app.use('/api/buscarUsuario', (req, res,) => {
         if (err) {
             throw err;
         }
-        console.log(result);
+        res.json(result);
+    })
+});
+
+app.get('/api/buscarLocal', (req, res,) => {
+
+    connection.query(`SELECT * FROM local`, (err, result, fields) => {
+        if (err) {
+            throw err;
+        }
         res.json(result);
     })
 });
 
 app.post('/api/salvarSetor', (req, res) => {
     const nomeSetor = req.body.nomeSetor;
+    const idLocal = req.body.idLocal;
 
-    const query = connection.query(`INSERT INTO setor(nome) VALUES(?)`, [nomeSetor, 1], (err, result) => {
+    const query = connection.query(`INSERT INTO setor(nome, local_id) VALUES(?, ?)`, [nomeSetor, idLocal], (err, result) => {
         if (err) {
             throw err;
         }
@@ -49,9 +59,10 @@ app.get('/api/buscarSetores', (req, res) => {
 app.post('/api/salvarRamal', (req, res) => {
     const numeroRamal = req.body.numeroRamal;
     const idSetor = req.body.idSetor;
-    const nomePessoa = req.body.nomePessoa
+    const nomePessoa = req.body.nomePessoa;
+    const numeroTelefone = req.body.numeroTelefone
 
-    const query = connection.query(`INSERT INTO ramal(ramal, setor_id, nome) VALUES(?, ?, ?)`, [numeroRamal, idSetor, nomePessoa], (err, result) => {
+    const query = connection.query(`INSERT INTO ramal(ramal, setor_id, nome, telefone) VALUES(?, ?, ?, ?)`, [numeroRamal, idSetor, nomePessoa, numeroTelefone], (err, result) => {
         if (err) {
             throw err;
         }
@@ -64,7 +75,7 @@ app.post('/api/salvarRamal', (req, res) => {
 });
 
 app.get('/api/buscarRamais', (req, res) => {
-    const query = connection.query(`SELECT r.ramal, r.nome, s.nome as setor FROM ramal r INNER JOIN setor s ON s.id = r.setor_id`, (err, result) => {
+    const query = connection.query(`SELECT r.ramal, r.nome, r.telefone, s.nome as setor FROM ramal r INNER JOIN setor s ON s.id = r.setor_id WHERE s.local_id = ?`, [1], (err, result) => {
         if (err) {
             throw err;
         }
@@ -76,7 +87,7 @@ app.get('/api/buscarRamais', (req, res) => {
 app.post('/api/pesquisar', (req, res) => {
     const pesquisa = req.body.pesquisar;
 
-    const query = connection.query(`SELECT r.ramal, r.nome, s.nome as setor FROM ramal r INNER JOIN setor s ON r.setor_id = s.id WHERE r.nome LIKE '%` + pesquisa + `%' OR s.nome LIKE '%` + pesquisa + `%'`, (err, result) => {
+    const query = connection.query(`SELECT r.ramal, r.nome, r.telefone, s.nome as setor FROM ramal r INNER JOIN setor s ON r.setor_id = s.id WHERE r.nome LIKE '%` + pesquisa + `%' OR s.nome LIKE '%` + pesquisa + `%'`, (err, result) => {
         if (err) {
             throw err;
         }
