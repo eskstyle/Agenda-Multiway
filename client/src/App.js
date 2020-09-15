@@ -8,6 +8,7 @@ import CadastroRamal from './screens/CadastroRamal';
 import CadastroSetor from './screens/CadastroSetor';
 import ListarSetores from './screens/ListarSetores';
 import EditarSetor from './screens/EditarSetor';
+import EditarRamal from './screens/EditarRamal';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/cadastro-setor" component={CadastroSetor} />
         <Route path="/listar-setores" component={ListarSetores} />
         <Route path="/editar-setor/:idSetor" component={EditarSetor} />
+        <Route path="/editar-ramal/:idRamal" component={EditarRamal} />
         {/* <ListarRamais /> */}
       </Switch>/
     </div>

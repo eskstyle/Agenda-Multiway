@@ -5,15 +5,19 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
-class EditarSetor extends React.Component {
+import MaskedFormControl from 'react-bootstrap-maskedinput';
+
+class EditarRamal extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
             data: [],
-            nomeSetor: '',
-            idLocal: '',
+            nomePessoa: '',
+            numeroRamal: '',
+            numeroTelefone: '',
+            idSetor: '',
             isLoading: false
         }
     }
@@ -21,8 +25,7 @@ class EditarSetor extends React.Component {
     componentDidMount() {
         this.setState({ isLoading: true });
 
-        //BUSCA AS CIDADES PARA SER EXIBIDO NO SELECT EMPRESA
-        fetch('/api/buscarLocal', {
+        fetch('/api/buscarSetores', {
             method: 'GET',
         })
             .then(result => result.json())
@@ -31,83 +34,76 @@ class EditarSetor extends React.Component {
             })
             .catch(err => console.log(err));
 
-        // BUSCA OS DADOS DO SETOR ESCOLHIDO PELO ID
-        fetch('/api/buscarSetor', {
+        // BUSCA OS DADOS DO RAMAL ESCOLHIDO PELO ID
+        fetch('/api/buscarRamal', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                idSetor: this.props.match.params.idSetor
+                idRamal: this.props.match.params.idRamal
             })
         })
             .then(result => result.json())
             .then(data => {
+                console.log(data);
                 this.setState({
-                    nomeSetor: data[0].nome,
-                    idLocal: data[0].local_id
+                    nomePessoa: data[0].nome_pessoa,
+                    numeroRamal: data[0].ramal,
+                    numeroTelefone: data[0].telefone,
+                    idSetor: data[0].setor_id
                 });
             })
             .catch(err => console.log(err));
     }
 
-    // ALTERA OS STADOS DAS VARIÁVEIS BASEADO NO ONCHANGE. A CADA LETRA DIGITADA SERÁ ALTERADO O VALOR.
-    handleChange = ({ target }) => {
-        this.setState({ [target.name]: target.value });
-    };
-
-    //FAZ UMA REQUISIÇÃO PARA NOSSO SERVER PARA SALVAR O SETOR NO BANCO DE DADOS.
-    salvarSetor = () => {
-        // document.getElementsByClassName('botao-salvar').firstChild.text.data = "salvando";
-        document.querySelector('.botao-salvar').innerHTML = "Salvando...";
-
-        fetch('/api/atualizarSetor', {
+    salvarRamal = () => {
+        console.log(this.state);
+        fetch('/api/salvarRamal', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                nomeSetor: this.state.nomeSetor,
-                idLocal: this.state.idLocal,
-                idSetor: this.props.match.params.idSetor
+                nomePessoa: this.state.nomePessoa,
+                numeroRamal: this.state.numeroRamal,
+                numeroTelefone: this.state.numeroTelefone,
+                idSetor: this.state.idSetor
             })
         })
             .then(response => {
                 if (!response.ok) {
                     throw Error(response.statusText);
                 }
+
                 response.json();
             })
-            .then(() => {
-                document.querySelector('.botao-salvar').innerHTML = "Salvar";
-                document.getElementsByClassName('alert-sucesso')[0].style.display = 'block'
-            })
+            .then(() => { document.getElementsByClassName('alert-sucesso')[0].style.display = 'block' })
             .catch(() => document.getElementsByClassName('alert-erro')[0].style.display = 'block');
     };
 
-    //CHAMADO NO onClose DO ALERT PARA FECHAR O ALERT DE ERRO.
+    handleChange = ({ target }) => {
+        this.setState({ [target.name]: target.value });
+    };
+
     esconderErro = visibility => {
+        console.log(visibility);
         if (visibility) {
             document.getElementsByClassName('alert-erro')[0].style.display = 'none'
         }
     };
 
-    //CHAMADO NO onClose DO ALERT PARA FECHAR O ALERT DE SUCESSO.
     esconderSucesso = visibility => {
         if (visibility) {
             document.getElementsByClassName('alert-sucesso')[0].style.display = 'none'
         }
     };
 
-    //RENDERIZA A TELA USANDO JSX
     render() {
 
-        // const { data, isLoading } = this.state
+        const { data, isLoading } = this.state;
 
-        var dados = this.state.data;
-        var carregando = this.state.isLoading;
-
-        if (carregando) {
+        if (isLoading) {
             return (
                 <div className="loading_container">
                     <Spinner animation="border" role="status" className="loading" variant="success">
@@ -119,20 +115,29 @@ class EditarSetor extends React.Component {
 
         return (
             <div className="tela">
-                {/* <HeaderAdmin /> */}
                 <div className="container">
                     <div className="titulo">
-                        <h2>Cadastro Setor</h2>
+                        <h2>Editar Ramal</h2>
                     </div>
+                    <Form.Group controlId="formCadastroPessoa">
+                        <Form.Label>Nome:</Form.Label>
+                        <Form.Control type="text" placeholder="Digite o nome" name="nomePessoa" value={this.state.nomePessoa} onChange={this.handleChange} required />
+                    </Form.Group>
+                    <Form.Group controlId="formCadastroRamal">
+                        <Form.Label>Ramal:</Form.Label>
+                        <MaskedFormControl type="text" placeholder="Digite o número do ramal" name="numeroRamal" mask='111' value={this.state.numeroRamal} onChange={this.handleChange} />
+
+                    </Form.Group>
+                    <Form.Group controlId="formCadastroTelefone">
+                        <Form.Label>Telefone:</Form.Label>
+                        <MaskedFormControl type="text" placeholder="Digite o número do telefone" name="numeroTelefone" mask='(11) 11111-1111' value={this.state.numeroTelefone} onChange={this.handleChange} />
+                    </Form.Group>
+
                     <Form.Group controlId="formCadastroSetor">
                         <Form.Label>Setor:</Form.Label>
-                        <Form.Control type="text" placeholder="Digite o nome do setor" name="nomeSetor" value={this.state.nomeSetor} onChange={this.handleChange} required />
-                    </Form.Group>
-                    <Form.Group controlId="formCadastroLocal">
-                        <Form.Label>Empresa:</Form.Label>
-                        <Form.Control as="select" name="idLocal" value={this.state.idLocal} onChange={this.handleChange.bind(this)} required>
+                        <Form.Control as="select" name="idSetor" value={this.state.idSetor} onChange={this.handleChange} required>
                             <option value="">Selecione</option>
-                            {dados.map(dado => <option key={dado.id} value={dado.id}>{dado.nome}</option>)}
+                            {data.map(dado => <option key={dado.id} value={dado.id}>{dado.nome}</option>)}
                         </Form.Control>
                     </Form.Group>
                     <div className="alert-erro">
@@ -141,13 +146,11 @@ class EditarSetor extends React.Component {
                     <div className="alert-sucesso">
                         <Alert variant='success' onClose={() => this.esconderSucesso(true)} dismissible>Salvo com sucesso!</Alert>
                     </div>
-                    <Button className="botoes-cor botao-salvar" type="button" onClick={this.salvarSetor} >Salvar</Button>
+                    <Button className="botoes-cor" variant="primary" type="button" onClick={this.salvarRamal}>Salvar</Button>
                 </div>
-                {/* <Footer /> */}
-            </div >
-
+            </div>
         )
-    }
+    };
 };
 
-export default EditarSetor;
+export default EditarRamal;

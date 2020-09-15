@@ -93,7 +93,19 @@ app.post('/api/salvarRamal', (req, res) => {
 });
 
 app.get('/api/buscarRamais', (req, res) => {
-    const query = connection.query(`SELECT r.ramal, r.nome, r.telefone, s.nome as setor FROM ramal r INNER JOIN setor s ON s.id = r.setor_id WHERE s.local_id = ?`, [1], (err, result) => {
+    const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor FROM ramal r INNER JOIN setor s ON s.id = r.setor_id WHERE s.local_id = ?`, [1], (err, result) => {
+        if (err) {
+            throw err;
+        }
+
+        res.json(result);
+    });
+});
+
+app.post('/api/buscarRamal', (req, res) => {
+    const idRamal = req.body.idRamal;
+
+    const query = connection.query(`SELECT r.id, r.data_criacao, r.ramal, r.nome as nome_pessoa, r.telefone, s.id as setor_id, s.nome as nome_setor  FROM ramal r INNER JOIN setor s ON r.setor_id = s.id WHERE r.id = ?`, [idRamal], (err, result) => {
         if (err) {
             throw err;
         }
@@ -113,9 +125,8 @@ app.post('/api/atualizarSetor', (req, res) => {
             // throw err;
         }
 
-        if (result.affectedRows >= 1) {
-            return res.status(200).send({ response: result });
-        }
+        return res.status(200).send({ response: result });
+
     });
 });
 
@@ -129,6 +140,30 @@ app.post('/api/pesquisar', (req, res) => {
         }
 
         res.json(result);
+    });
+});
+
+app.post('/api/excluirSetor', (req, res) => {
+    const idSetor = req.body.idSetor;
+
+    connection.query(`SELECT * FROM ramal WHERE setor_id = ?`, [idSetor], (err, result) => {
+        if (err) {
+            return res.status(500).send({ error: err });
+        }
+
+        if (result.length <= 0) {
+            connection.query(`DELETE FROM setor WHERE id= ? `, [idSetor], (err, result) => {
+                if (err) {
+                    return res.status(500).send({ error: err });
+                }
+
+                return res.status(200).send({ response: "Excluído com sucesso!", excluido: true });
+
+            });
+        } else {
+            return res.status(200).send({ response: 'Todos os ramais deste setor devem ser excluídos para prosseguir!', excluido: false });
+        }
+
     });
 });
 
