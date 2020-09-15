@@ -103,6 +103,35 @@ body{
   margin-top: 40px;
 }
 
+.botoes-cor{
+  background-color: rgb(16, 143, 16);
+  border-color: rgb(16, 143, 16);
+}
+.botoes-cor:hover{
+  background-color: rgb(43, 185, 43);
+  border-color: rgb(43, 185, 43);
+}
+.botoes-cor:focus{
+  background-color: rgb(43, 185, 43);
+  border-color: rgb(43, 185, 43);
+}
+
+.alert-erro,
+.alert-sucesso{
+  display: none;  
+}
+
+.loading_container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.loading{
+  width: 6rem;
+  height: 6rem;
+}
 
 /* @media (min-width: 400px ) and (max-width: 800px){
     

@@ -58,6 +58,8 @@ class CadastroSetor extends React.Component {
 
     //FAZ UMA REQUISIÇÃO PARA NOSSO SERVER PARA SALVAR O SETOR NO BANCO DE DADOS.
     salvarSetor = () => {
+        // document.getElementsByClassName('botao-salvar').firstChild.text.data = "salvando";
+        document.querySelector('.botao-salvar').innerHTML = "Salvando...";
 
         fetch('/api/atualizarSetor', {
             method: 'POST',
@@ -66,7 +68,8 @@ class CadastroSetor extends React.Component {
             },
             body: JSON.stringify({
                 nomeSetor: this.state.nomeSetor,
-                idLocal: this.state.idLocal
+                idLocal: this.state.idLocal,
+                idSetor: this.props.match.params.idSetor
             })
         })
             .then(response => {
@@ -76,7 +79,10 @@ class CadastroSetor extends React.Component {
 
                 response.json();
             })
-            .then(() => { document.getElementsByClassName('alert-sucesso')[0].style.display = 'block' })
+            .then(() => {
+                document.querySelector('.botao-salvar').innerHTML = "Salvar";
+                document.getElementsByClassName('alert-sucesso')[0].style.display = 'block'
+            })
             .catch(() => document.getElementsByClassName('alert-erro')[0].style.display = 'block');
     };
 
@@ -105,7 +111,7 @@ class CadastroSetor extends React.Component {
         if (carregando) {
             return (
                 <div className="loading_container">
-                    <Spinner animation="grow" role="status" className="loading">
+                    <Spinner animation="border" role="status" className="loading" variant="success">
                         <span className="sr-only">Loading...</span>
                     </Spinner>
                 </div>
@@ -136,7 +142,7 @@ class CadastroSetor extends React.Component {
                     <div className="alert-sucesso">
                         <Alert variant='success' onClose={() => this.esconderSucesso(true)} dismissible>Salvo com sucesso!</Alert>
                     </div>
-                    <Button className="botoes-cor" variant="primary" type="button" onClick={this.salvarSetor} >Salvar</Button>
+                    <Button className="botoes-cor botao-salvar" type="button" onClick={this.salvarSetor} >Salvar</Button>
                 </div>
                 {/* <Footer /> */}
             </div >

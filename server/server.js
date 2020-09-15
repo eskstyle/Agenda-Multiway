@@ -102,19 +102,7 @@ app.get('/api/buscarRamais', (req, res) => {
     });
 });
 
-app.post('/api/pesquisar', (req, res) => {
-    const pesquisa = req.body.pesquisar;
-
-    const query = connection.query(`SELECT r.ramal, r.nome, r.telefone, s.nome as setor FROM ramal r INNER JOIN setor s ON r.setor_id = s.id WHERE r.nome LIKE '%` + pesquisa + `%' OR s.nome LIKE '%` + pesquisa + `%'`, (err, result) => {
-        if (err) {
-            throw err;
-        }
-
-        res.json(result);
-    });
-});
-
-app.post('api/atualizarSetor', (req, res) => {
+app.post('/api/atualizarSetor', (req, res) => {
     const nomeSetor = req.body.nomeSetor;
     const idLocal = req.body.idLocal;
     const idSetor = req.body.idSetor;
@@ -128,6 +116,19 @@ app.post('api/atualizarSetor', (req, res) => {
         if (result.affectedRows >= 1) {
             return res.status(200).send({ response: result });
         }
+    });
+});
+
+
+app.post('/api/pesquisar', (req, res) => {
+    const pesquisa = req.body.pesquisar;
+
+    const query = connection.query(`SELECT r.ramal, r.nome, r.telefone, s.nome as setor FROM ramal r INNER JOIN setor s ON r.setor_id = s.id WHERE r.nome LIKE '%` + pesquisa + `%' OR s.nome LIKE '%` + pesquisa + `%'`, (err, result) => {
+        if (err) {
+            throw err;
+        }
+
+        res.json(result);
     });
 });
 
