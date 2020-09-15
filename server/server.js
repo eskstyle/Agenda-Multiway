@@ -37,17 +37,32 @@ app.post('/api/salvarSetor', (req, res) => {
 
     const query = connection.query(`INSERT INTO setor(nome, local_id) VALUES(?, ?)`, [nomeSetor, idLocal], (err, result) => {
         if (err) {
-            throw err;
+            return res.status(500).send({ error: err });
+            // throw err;
         }
 
-        res.json(result);
+        if (result.affectedRows >= 1) {
+            return res.status(200).send({ response: result });
+        }
     });
 
     // res.json(query.sql); IMPRIME O SQL QUE ESTÁ SENDO FEITO
 });
 
 app.get('/api/buscarSetores', (req, res) => {
-    connection.query(`SELECT * FROM setor`, (err, result) => {
+    connection.query(`SELECT s.id, s.data_criacao, s.nome, l.nome as nome_local FROM setor s INNER JOIN local l ON s.local_id = l.id;`, (err, result) => {
+        if (err) {
+            throw err;
+        }
+
+        res.json(result);
+    });
+});
+
+app.post('/api/buscarSetor', (req, res) => {
+    const idSetor = req.body.idSetor;
+
+    connection.query(`SELECT * from setor WHERE id = ?;`, [idSetor], (err, result) => {
         if (err) {
             throw err;
         }
@@ -64,10 +79,13 @@ app.post('/api/salvarRamal', (req, res) => {
 
     const query = connection.query(`INSERT INTO ramal(ramal, setor_id, nome, telefone) VALUES(?, ?, ?, ?)`, [numeroRamal, idSetor, nomePessoa, numeroTelefone], (err, result) => {
         if (err) {
-            throw err;
+            return res.status(500).send({ error: err });
+            // throw err;
         }
 
-        res.json(result);
+        if (result.affectedRows >= 1) {
+            return res.status(200).send({ response: result });
+        }
     });
 
     // IMPRIME O SQL QUE ESTÁ SENDO FEITO
@@ -93,6 +111,23 @@ app.post('/api/pesquisar', (req, res) => {
         }
 
         res.json(result);
+    });
+});
+
+app.post('api/atualizarSetor', (req, res) => {
+    const nomeSetor = req.body.nomeSetor;
+    const idLocal = req.body.idLocal;
+    const idSetor = req.body.idSetor;
+
+    const query = connection.query(`UPDATE setor SET nome = ?, local_id = ? WHERE id= ?`, [nomeSetor, idLocal, idSetor], (err, result) => {
+        if (err) {
+            return res.status(500).send({ error: err });
+            // throw err;
+        }
+
+        if (result.affectedRows >= 1) {
+            return res.status(200).send({ response: result });
+        }
     });
 });
 

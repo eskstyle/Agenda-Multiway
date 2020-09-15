@@ -2,18 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import CadastroSetor from './screens/CadastroSetor';
-import CadastroRamal from './screens/CadastroRamal';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+
+import { HeaderAdmin } from './components/Header';
+import Footer from './components/Footer';
 
 ReactDOM.render(
   <BrowserRouter>
-    <Switch>
-      <Route path="/" exact={true} component={App} />
-      <Route path="/cadastro-setor" component={CadastroSetor} />
-      <Route path="/cadastro-ramal" component={CadastroRamal} />
-    </Switch>
+    <HeaderAdmin />
+    <App />
+    <Footer />
   </BrowserRouter>,
   document.getElementById('root')
 );
