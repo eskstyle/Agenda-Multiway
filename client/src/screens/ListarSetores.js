@@ -4,6 +4,7 @@ import { FcEngineering } from "react-icons/fc";
 
 import Table from 'react-bootstrap/Table';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Button from 'react-bootstrap/Button';
 
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-bootstrap';
@@ -28,6 +29,30 @@ class CadastroSetor extends React.Component {
             .then(data => this.setState({ data }))
             .catch(err => console.log(err));
     }
+
+    excluirSetor = setorId => {
+        const resposta = window.confirm("Tem certeza que deseja excluir este setor?");
+
+        if (resposta) {
+            fetch('/api/excluirSetor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    idSetor: setorId
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.response);
+                    if (data.excluido) {
+                        this.setState({ data: this.state.data.filter(dado => dado.id !== setorId) });
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+    };
 
     render() {
 
@@ -81,7 +106,7 @@ class CadastroSetor extends React.Component {
                                                 delay={{ show: 250, hide: 200 }}
                                                 overlay={tooltipExcluir}
                                             >
-                                                <Link to=""><FcFullTrash size="25"></FcFullTrash></Link>
+                                                <Button variant="link" onClick={this.excluirSetor.bind(this, dados.id)}><FcFullTrash size="25"></FcFullTrash></Button>
                                             </OverlayTrigger>
                                         </td>
                                     </tr>
