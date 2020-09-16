@@ -25,7 +25,13 @@ class ListarRamais extends React.Component {
         this.setState({ isLoading: true });
 
         fetch('api/buscarRamais', {
-            method: 'GET'
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idCidade: 1
+            })
         })
             .then(result => result.json())
             .then(data => {

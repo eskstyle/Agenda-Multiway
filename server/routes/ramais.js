@@ -3,8 +3,10 @@ const router = express.Router();
 
 const connection = require('../db/db');
 
-router.get('/api/buscarRamais', (req, res) => {
-    const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor FROM ramal r INNER JOIN setor s ON s.id = r.setor_id WHERE s.local_id = ?`, [1], (err, result) => {
+router.post('/api/buscarRamais', (req, res) => {
+    const idCidade = req.body.idCidade;
+
+    const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor FROM ramal r INNER JOIN setor s ON s.id = r.setor_id WHERE s.local_id = ?`, [idCidade], (err, result) => {
         if (err) {
             throw err;
         }
