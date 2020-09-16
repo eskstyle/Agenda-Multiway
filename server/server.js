@@ -161,16 +161,19 @@ app.post('/api/pesquisar', (req, res) => {
     });
 });
 
+//UM SETOR SÓ PODERÁ SER DELETADO SE NÃO HOUVER MAIS RAMAIS CADASTRADOS PARA ELE.
 app.post('/api/excluirSetor', (req, res) => {
     const idSetor = req.body.idSetor;
 
+    //BUSCA SE EXISTE RAMAIS PARA AQUELE SETOR.
     connection.query(`SELECT * FROM ramal WHERE setor_id = ?`, [idSetor], (err, result) => {
         if (err) {
             return res.status(500).send({ error: err });
         }
 
+        //CASO NÃO HOUVER SERÁ O SETOR SERÁ DELETADO.
         if (result.length <= 0) {
-            connection.query(`DELETE FROM setor WHERE id= ? `, [idSetor], (err, result) => {
+            connection.query(`DELETE FROM setor WHERE id = ? `, [idSetor], (err, result) => {
                 if (err) {
                     return res.status(500).send({ error: err });
                 }
@@ -183,6 +186,19 @@ app.post('/api/excluirSetor', (req, res) => {
         }
 
     });
+});
+
+app.post('/api/excluirRamal', (req, res) => {
+    const idRamal = req.body.idRamal;
+
+    const sql = connection.query(`DELETE FROM ramal WHERE id = ? `, [idRamal], (err, result) => {
+        if (err) {
+            return res.status(500).send({ error: err });
+        }
+
+        return res.status(200).send({ response: "Excluído com sucesso!", excluido: true });
+    });
+
 });
 
 app.listen(3080, () => {

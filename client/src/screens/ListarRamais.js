@@ -4,6 +4,7 @@ import Table from 'react-bootstrap/Table';
 import FormControl from 'react-bootstrap/FormControl';
 import Spinner from 'react-bootstrap/Spinner';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import { FcFullTrash } from "react-icons/fc";
 import { FcEngineering } from "react-icons/fc";
@@ -49,6 +50,32 @@ class ListarRamais extends React.Component {
                 this.setState({ data: data });
             })
             .catch(err => console.log(err));
+    };
+
+    excluirRamal = ramalId => {
+        const resposta = window.confirm("Tem certeza que deseja excluir este ramal?");
+
+        console.log(ramalId);
+
+        if (resposta) {
+            fetch('/api/excluirRamal', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    idRamal: ramalId
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.response);
+                    if (data.excluido) {
+                        this.setState({ data: this.state.data.filter(dado => dado.id !== ramalId) });
+                    }
+                })
+                .catch(err => console.log(err));
+        }
     };
 
     render() {
@@ -111,7 +138,7 @@ class ListarRamais extends React.Component {
                                         delay={{ show: 250, hide: 200 }}
                                         overlay={tooltipExcluir}
                                     >
-                                        <Link to=""><FcFullTrash size="25"></FcFullTrash></Link>
+                                        <Button variant="link" onClick={this.excluirRamal.bind(this, dados.id)}><FcFullTrash size="25"></FcFullTrash></Button>
                                     </OverlayTrigger></td>
                             </tr>)}
                         </tbody>
