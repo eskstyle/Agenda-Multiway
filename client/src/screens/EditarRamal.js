@@ -68,7 +68,9 @@ class EditarRamal extends React.Component {
                 nomePessoa: this.state.nomePessoa,
                 numeroRamal: this.state.numeroRamal,
                 numeroTelefone: this.state.numeroTelefone,
-                idSetor: this.state.idSetor
+                idSetor: this.state.idSetor,
+                idRamal: this.props.match.params.idRamal,
+                acao: 2 // - atualizar
             })
         })
             .then(response => {

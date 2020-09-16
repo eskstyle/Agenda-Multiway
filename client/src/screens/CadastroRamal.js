@@ -42,7 +42,8 @@ class CadastroRamal extends React.Component {
                 nomePessoa: this.state.nomePessoa,
                 numeroRamal: this.state.numeroRamal,
                 numeroTelefone: this.state.numeroTelefone,
-                idSetor: this.state.idSetor
+                idSetor: this.state.idSetor,
+                acao: 1 // - salvar
             })
         })
             .then(response => {

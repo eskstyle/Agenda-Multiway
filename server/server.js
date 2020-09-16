@@ -74,19 +74,37 @@ app.post('/api/buscarSetor', (req, res) => {
 app.post('/api/salvarRamal', (req, res) => {
     const numeroRamal = req.body.numeroRamal;
     const idSetor = req.body.idSetor;
+    const idRamal = req.body.idRamal;
     const nomePessoa = req.body.nomePessoa;
-    const numeroTelefone = req.body.numeroTelefone
+    const numeroTelefone = req.body.numeroTelefone;
+    //acao: 1- salvar / 2 - atualizar
+    const acao = req.body.acao;
 
-    const query = connection.query(`INSERT INTO ramal(ramal, setor_id, nome, telefone) VALUES(?, ?, ?, ?)`, [numeroRamal, idSetor, nomePessoa, numeroTelefone], (err, result) => {
-        if (err) {
-            return res.status(500).send({ error: err });
-            // throw err;
-        }
+    if (acao === 1) {
+        const query = connection.query(`INSERT INTO ramal(ramal, setor_id, nome, telefone) VALUES(?, ?, ?, ?)`, [numeroRamal, idSetor, nomePessoa, numeroTelefone], (err, result) => {
+            if (err) {
+                return res.status(500).send({ error: err });
+                // throw err;
+            }
 
-        if (result.affectedRows >= 1) {
-            return res.status(200).send({ response: result });
-        }
-    });
+            if (result.affectedRows >= 1) {
+                return res.status(200).send({ response: result });
+            }
+        });
+    } else if (acao === 2) {
+        const query = connection.query(`UPDATE ramal SET nome = ?, ramal = ?, telefone = ?, setor_id = ? WHERE id = ?`, [nomePessoa, numeroRamal, numeroTelefone, idSetor, idRamal], (err, result) => {
+            if (err) {
+                return res.status(500).send({ error: err });
+                // throw err;
+            }
+
+            if (result.affectedRows >= 1) {
+                return res.status(200).send({ response: result });
+            }
+        });
+    } else {
+        res.json('acao não informada!');
+    }
 
     // IMPRIME O SQL QUE ESTÁ SENDO FEITO
     // res.json(query.sql); 
