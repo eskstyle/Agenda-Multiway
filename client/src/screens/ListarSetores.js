@@ -5,6 +5,7 @@ import { FcEngineering } from "react-icons/fc";
 import Table from 'react-bootstrap/Table';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-bootstrap';
@@ -17,16 +18,19 @@ class CadastroSetor extends React.Component {
         this.state = {
             data: [],
             nomeSetor: '',
-            idLocal: ''
+            idLocal: '',
+            isLoading: false
         }
     }
 
     componentDidMount() {
+        this.setState({ isLoading: true });
+
         fetch('/api/buscarSetores', {
             method: 'GET',
         })
             .then(result => result.json())
-            .then(data => this.setState({ data }))
+            .then(data => this.setState({ data, isLoading: false }))
             .catch(err => console.log(err));
     }
 
@@ -56,7 +60,7 @@ class CadastroSetor extends React.Component {
 
     render() {
 
-        const { data } = this.state;
+        const { data, isLoading } = this.state;
 
         const tooltipEditar = (props) => (
             <Tooltip id="button-editar" {...props}>
@@ -70,6 +74,16 @@ class CadastroSetor extends React.Component {
             </Tooltip>
 
         );
+
+        if (isLoading) {
+            return (
+                <div className="loading_container">
+                    <Spinner animation="border" role="status" className="loading" variant="success">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </div>
+            );
+        }
 
         return (
             <div className="tela">
