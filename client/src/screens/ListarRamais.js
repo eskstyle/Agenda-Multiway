@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Table from 'react-bootstrap/Table';
 import FormControl from 'react-bootstrap/FormControl';
@@ -10,6 +10,9 @@ import { FcFullTrash } from "react-icons/fc";
 import { FcEngineering } from "react-icons/fc";
 import { Tooltip } from 'react-bootstrap';
 
+import { connect } from 'react-redux';
+import * as actionTypes from '../store/actionTypes';
+
 class ListarRamais extends React.Component {
 
     constructor(props) {
@@ -17,11 +20,23 @@ class ListarRamais extends React.Component {
 
         this.state = {
             data: [],
-            isLoading: false
+            isLoading: false,
+            empresaId: this.props.empresaId
         }
     }
 
     componentDidMount() {
+        this.buscarRamais();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.empresaId !== this.props.empresaId) {
+            this.setState({ empresaId: this.props.empresaId });
+            this.buscarRamais();
+        }
+    }
+
+    buscarRamais = () => {
         this.setState({ isLoading: true });
 
         fetch('api/buscarRamais', {
@@ -30,7 +45,7 @@ class ListarRamais extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                idCidade: 1
+                idCidade: this.state.empresaId
             })
         })
             .then(result => result.json())
@@ -61,8 +76,6 @@ class ListarRamais extends React.Component {
     excluirRamal = ramalId => {
         const resposta = window.confirm("Tem certeza que deseja excluir este ramal?");
 
-        console.log(ramalId);
-
         if (resposta) {
             fetch('/api/excluirRamal', {
                 method: 'POST',
@@ -85,6 +98,7 @@ class ListarRamais extends React.Component {
     };
 
     render() {
+        console.log(this.state.empresaId);
 
         const { data, isLoading } = this.state;
 
@@ -145,7 +159,8 @@ class ListarRamais extends React.Component {
                                         overlay={tooltipExcluir}
                                     >
                                         <Button variant="link" onClick={this.excluirRamal.bind(this, dados.id)}><FcFullTrash size="25"></FcFullTrash></Button>
-                                    </OverlayTrigger></td>
+                                    </OverlayTrigger>
+                                </td>
                             </tr>)}
                         </tbody>
                     </Table>
@@ -155,4 +170,16 @@ class ListarRamais extends React.Component {
     };
 }
 
-export default ListarRamais;
+const mapStateToProps = state => {
+    return {
+        empresaId: state.empresaId
+    };
+}
+
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         onMudarEmpresa: () => dispatch({ type: actionTypes.MUDAR_EMPRESA, payload: 2 })
+//     };
+// };
+
+export default connect(mapStateToProps)(ListarRamais);

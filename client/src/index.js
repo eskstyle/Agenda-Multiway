@@ -4,16 +4,24 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
-
 import { HeaderAdmin } from './components/Header';
 import Footer from './components/Footer';
 
+import { createStore } from '@reduxjs/toolkit';
+import reducer from './store/reducer';
+// import store from './store/myStore';
+import { Provider } from 'react-redux';
+
+const store = createStore(reducer);
+
 ReactDOM.render(
-  <BrowserRouter>
-    <HeaderAdmin />
-    <App />
-    <Footer />
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <HeaderAdmin />
+      <App />
+      <Footer />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
 

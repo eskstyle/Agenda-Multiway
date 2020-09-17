@@ -12,7 +12,7 @@ class CadastroRamal extends React.Component {
         super(props);
 
         this.state = {
-            data: [],
+            dados: [],
             nomePessoa: '',
             numeroRamal: '',
             numeroTelefone: '',
@@ -25,8 +25,8 @@ class CadastroRamal extends React.Component {
             method: 'GET',
         })
             .then(result => result.json())
-            .then(data => {
-                this.setState({ data });
+            .then(dados => {
+                this.setState({ dados });
             })
             .catch(err => console.log(err));
     }
@@ -76,7 +76,7 @@ class CadastroRamal extends React.Component {
 
     render() {
 
-        const { data } = this.state;
+        const { dados } = this.state;
 
         return (
             <div className="tela">
@@ -102,7 +102,7 @@ class CadastroRamal extends React.Component {
                         <Form.Label>Setor:</Form.Label>
                         <Form.Control as="select" name="idSetor" value={this.state.idSetor} onChange={this.handleChange} required>
                             <option value="">Selecione</option>
-                            {data.map(dado => <option key={dado.id} value={dado.id}>{dado.nome}</option>)}
+                            {dados.map(dado => <option key={dado.id} value={dado.id}>{dado.nome}</option>)}
                         </Form.Control>
                     </Form.Group>
                     <div className="alert-erro">
