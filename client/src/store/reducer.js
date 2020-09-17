@@ -25,8 +25,9 @@ const reducer = (state = initialState, action) => {
                     senha: null
                 }
             }
+        default:
+            return state;
     }
-    return state;
 }
 
 export default reducer;

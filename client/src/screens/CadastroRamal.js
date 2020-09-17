@@ -23,8 +23,6 @@ class CadastroRamal extends React.Component {
     }
 
     componentDidMount() {
-
-
         fetch('/api/buscarCidades', {
             method: 'GET',
         })
@@ -72,7 +70,7 @@ class CadastroRamal extends React.Component {
     handleChange = ({ target }) => {
         this.setState({ [target.name]: target.value });
 
-        if (target.name == "idCidade" && target.value > 0) {
+        if (target.name === "idCidade" && target.value > 0) {
             fetch('/api/buscarSetores', {
                 method: 'POST',
                 headers: {
@@ -89,7 +87,7 @@ class CadastroRamal extends React.Component {
                 .catch(err => console.log(err));
         }
 
-        if(target.name == "idCidade" && target.value <= 0){
+        if(target.name === "idCidade" && target.value <= 0){
             this.setState({ listaSetores: [] });
         }
     };
@@ -109,7 +107,7 @@ class CadastroRamal extends React.Component {
 
     render() {
 
-        const { dados, listaCidades, listaSetores } = this.state;
+        const { listaCidades, listaSetores } = this.state;
 
         return (
             <div className="tela">

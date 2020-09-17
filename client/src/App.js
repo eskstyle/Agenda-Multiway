@@ -21,7 +21,7 @@ function App() {
         <Route path="/editar-setor/:idSetor" component={EditarSetor} />
         <Route path="/editar-ramal/:idRamal" component={EditarRamal} />
         <Route path="/:empresa" component={ListarRamais} />
-      </Switch>/
+      </Switch>
     </div>
   );
 }

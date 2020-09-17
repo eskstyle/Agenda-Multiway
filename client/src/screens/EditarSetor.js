@@ -19,10 +19,10 @@ class EditarSetor extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ isLoading: true });
+        // this.setState({ isLoading: true });
 
         //BUSCA AS CIDADES PARA SER EXIBIDO NO SELECT EMPRESA
-        fetch('/api/buscarLocal', {
+        fetch('/api/buscarCidades', {
             method: 'GET',
         })
             .then(result => result.json())

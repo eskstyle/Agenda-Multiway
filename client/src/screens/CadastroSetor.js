@@ -17,7 +17,7 @@ class CadastroSetor extends React.Component {
     }
 
     componentDidMount() {
-        fetch('/api/buscarLocal', {
+        fetch('/api/buscarCidades', {
             method: 'GET',
         })
             .then(result => result.json())

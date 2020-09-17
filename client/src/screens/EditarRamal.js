@@ -13,29 +13,28 @@ class EditarRamal extends React.Component {
         super(props);
 
         this.state = {
-            data: [],
+            listaSetores: [],
+            listaCidades: [],
             nomePessoa: '',
             numeroRamal: '',
             numeroTelefone: '',
-            idSetor: '',
+            setorId: '',
+            cidadeId: '',
             isLoading: false
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.setState({ isLoading: true });
 
-        fetch('/api/buscarSetores', {
+        const responseCidades = await fetch('/api/buscarCidades', {
             method: 'GET',
-        })
-            .then(result => result.json())
-            .then(data => {
-                this.setState({ data: data, isLoading: false });
-            })
-            .catch(err => console.log(err));
+        });
+
+        const listaCidades = await responseCidades.json();
 
         // BUSCA OS DADOS DO RAMAL ESCOLHIDO PELO ID
-        fetch('/api/buscarRamal', {
+        const responseRamal = await fetch('/api/buscarRamal', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -44,17 +43,32 @@ class EditarRamal extends React.Component {
                 idRamal: this.props.match.params.idRamal
             })
         })
-            .then(result => result.json())
-            .then(data => {
-                console.log(data);
-                this.setState({
-                    nomePessoa: data[0].nome_pessoa,
-                    numeroRamal: data[0].ramal,
-                    numeroTelefone: data[0].telefone,
-                    idSetor: data[0].setor_id
-                });
+
+        const dadosRamal = await responseRamal.json();
+
+        const responseSetores = await fetch('/api/buscarSetores', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                idCidade: dadosRamal[0].cidade_id,
             })
-            .catch(err => console.log(err));
+        });
+
+        const listaSetores = await responseSetores.json();
+
+        this.setState({
+            listaCidades: listaCidades,
+            listaSetores: listaSetores,
+            nomePessoa: dadosRamal[0].nome_pessoa,
+            numeroRamal: dadosRamal[0].ramal,
+            numeroTelefone: dadosRamal[0].telefone,
+            cidadeId: dadosRamal[0].cidade_id,
+            setorId: dadosRamal[0].setor_id,
+        });
+
+        this.setState({ isLoading: false });
     }
 
     salvarRamal = () => {
@@ -68,7 +82,7 @@ class EditarRamal extends React.Component {
                 nomePessoa: this.state.nomePessoa,
                 numeroRamal: this.state.numeroRamal,
                 numeroTelefone: this.state.numeroTelefone,
-                idSetor: this.state.idSetor,
+                idSetor: this.state.setorId,
                 idRamal: this.props.match.params.idRamal,
                 acao: 2 // - atualizar
             })
@@ -86,10 +100,30 @@ class EditarRamal extends React.Component {
 
     handleChange = ({ target }) => {
         this.setState({ [target.name]: target.value });
+
+        if (target.name === "cidadeId" && target.value > 0) {
+            fetch('/api/buscarSetores', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    idCidade: target.value
+                })
+            })
+                .then(result => result.json())
+                .then(listaSetores => {
+                    this.setState({ listaSetores: listaSetores });
+                })
+                .catch(err => console.log(err));
+        }
+
+        if (target.name === "cidadeId" && target.value <= 0) {
+            this.setState({ listaSetores: [], setorId: '' });
+        }
     };
 
     esconderErro = visibility => {
-        console.log(visibility);
         if (visibility) {
             document.getElementsByClassName('alert-erro')[0].style.display = 'none'
         }
@@ -103,7 +137,7 @@ class EditarRamal extends React.Component {
 
     render() {
 
-        const { data, isLoading } = this.state;
+        const { isLoading, listaCidades, listaSetores } = this.state;
 
         if (isLoading) {
             return (
@@ -134,12 +168,18 @@ class EditarRamal extends React.Component {
                         <Form.Label>Telefone:</Form.Label>
                         <MaskedFormControl type="text" placeholder="Digite o número do telefone" name="numeroTelefone" mask='(11) 11111-1111' value={this.state.numeroTelefone} onChange={this.handleChange} />
                     </Form.Group>
-
+                    <Form.Group controlId="formCadastroCidade">
+                        <Form.Label>Cidade:</Form.Label>
+                        <Form.Control as="select" name="cidadeId" value={this.state.cidadeId} onChange={this.handleChange} required>
+                            <option value="">Selecione</option>
+                            {listaCidades.map(cidade => <option key={cidade.id} value={cidade.id}>{cidade.nome}</option>)}
+                        </Form.Control>
+                    </Form.Group>
                     <Form.Group controlId="formCadastroSetor">
                         <Form.Label>Setor:</Form.Label>
-                        <Form.Control as="select" name="idSetor" value={this.state.idSetor} onChange={this.handleChange} required>
+                        <Form.Control as="select" name="setorId" value={this.state.setorId} onChange={this.handleChange} required>
                             <option value="">Selecione</option>
-                            {data.map(dado => <option key={dado.id} value={dado.id}>{dado.nome}</option>)}
+                            {listaSetores.map(setor => <option key={setor.id} value={setor.id}>{setor.nome}</option>)}
                         </Form.Control>
                     </Form.Group>
                     <div className="alert-erro">

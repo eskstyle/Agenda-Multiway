@@ -1,12 +1,9 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import logo from '../images/logo.png';
 // import { __esModule } from 'react-bootstrap-maskedinput';
-
-import { useSelector, useDispatch } from 'react-redux';
-import * as actionTypes from '../store/actionTypes';
 
 export const Header = () => {
     return (
@@ -32,7 +29,6 @@ export const Header = () => {
 };
 
 export const HeaderAdmin = () => {
-    const dispatch = useDispatch();
 
     // const mudarEmpresa = empresaId => {
     //     dispatch({ type: actionTypes.MUDAR_EMPRESA, payload: empresaId });

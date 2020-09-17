@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Table from 'react-bootstrap/Table';
 import FormControl from 'react-bootstrap/FormControl';
@@ -9,9 +9,6 @@ import { Link } from 'react-router-dom';
 import { FcFullTrash } from "react-icons/fc";
 import { FcEngineering } from "react-icons/fc";
 import { Tooltip } from 'react-bootstrap';
-
-import { connect } from 'react-redux';
-import * as actionTypes from '../store/actionTypes';
 
 class ListarRamais extends React.Component {
 
@@ -32,9 +29,9 @@ class ListarRamais extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         let id = 0;
 
-        if (this.props.match.params.empresa == 'aguai') {
+        if (this.props.match.params.empresa === 'aguai') {
             id = 1
-        } else if (this.props.match.params.empresa == 'sao-paulo') {
+        } else if (this.props.match.params.empresa === 'sao-paulo') {
             id = 2
         } else {
             id = 0

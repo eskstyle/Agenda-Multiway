@@ -27,7 +27,13 @@ class CadastroSetor extends React.Component {
         this.setState({ isLoading: true });
 
         fetch('/api/buscarSetores', {
-            method: 'GET',
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                idCidade: 0 // 0 - todos os sertores
+            })
         })
             .then(result => result.json())
             .then(data => this.setState({ data, isLoading: false }))
