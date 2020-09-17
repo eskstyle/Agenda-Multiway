@@ -20,7 +20,7 @@ function App() {
         <Route path="/listar-setores" component={ListarSetores} />
         <Route path="/editar-setor/:idSetor" component={EditarSetor} />
         <Route path="/editar-ramal/:idRamal" component={EditarRamal} />
-        {/* <ListarRamais /> */}
+        <Route path="/:empresa" component={ListarRamais} />
       </Switch>/
     </div>
   );

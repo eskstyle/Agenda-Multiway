@@ -34,9 +34,9 @@ export const Header = () => {
 export const HeaderAdmin = () => {
     const dispatch = useDispatch();
 
-    const mudarEmpresa = empresaId => {
-        dispatch({ type: actionTypes.MUDAR_EMPRESA, payload: empresaId });
-    }
+    // const mudarEmpresa = empresaId => {
+    //     dispatch({ type: actionTypes.MUDAR_EMPRESA, payload: empresaId });
+    // }
 
     return (
         <Navbar className="header">
@@ -44,10 +44,12 @@ export const HeaderAdmin = () => {
                 <img src={logo} className="logo" alt="" />
             </Link>
             <Nav className="justify-content-start itens">
-                {/* <Nav.Link className="header-itens" href="#">AGUAÍ</Nav.Link>
-                <Nav.Link className="header-itens" href="#">SÃO PAULO</Nav.Link> */}
-                <Button className="nav-link header-itens" variant="link" onClick={mudarEmpresa.bind(this, 1)}>AGUAÍ</Button>
-                <Button className="nav-link header-itens" variant="link" onClick={mudarEmpresa.bind(this, 2)}>SÃO PAULO</Button>
+                <Link to="/aguai" className="header-itens nav-link">AGUAÍ</Link>
+                <Link to="/sao-paulo" className="header-itens nav-link">SÃO PAULO</Link>
+                {/* <Nav.Link className="header-itens" href="/1">AGUAÍ</Nav.Link>
+                <Nav.Link className="header-itens" href="/2">SÃO PAULO</Nav.Link> */}
+                {/* <Button className="nav-link header-itens" variant="link" onClick={() => mudarEmpresa(1)}>AGUAÍ</Button>
+                <Button className="nav-link header-itens" variant="link" onClick={() => mudarEmpresa(2)}>SÃO PAULO</Button> */}
             </Nav>
             <NavDropdown className="dropdown-menu-header" title="OPÇÕES" id="nav-dropdown" >
                 <Link to="/cadastro-setor" className="dropdown-item">Cadastrar Setor</Link>

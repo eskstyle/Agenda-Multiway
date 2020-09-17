@@ -50,7 +50,15 @@ class CadastroSetor extends React.Component {
 
                 response.json();
             })
-            .then(() => { document.getElementsByClassName('alert-sucesso')[0].style.display = 'block' })
+            .then(() => {
+                document.getElementsByClassName('alert-sucesso')[0].style.display = 'block';
+                this.setState({
+                    nomePessoa: '',
+                    numeroRamal: '',
+                    numeroTelefone: '',
+                    idSetor: ''
+                });
+            })
             .catch(() => document.getElementsByClassName('alert-erro')[0].style.display = 'block');
     };
 

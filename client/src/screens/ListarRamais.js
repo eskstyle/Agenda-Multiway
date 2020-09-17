@@ -21,7 +21,7 @@ class ListarRamais extends React.Component {
         this.state = {
             data: [],
             isLoading: false,
-            empresaId: this.props.empresaId
+            empresaId: null
         }
     }
 
@@ -29,9 +29,18 @@ class ListarRamais extends React.Component {
         this.buscarRamais();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.empresaId !== this.props.empresaId) {
-            this.setState({ empresaId: this.props.empresaId });
+    componentDidUpdate(prevProps, prevState) {
+        let id = 0;
+
+        if (this.props.match.params.empresa == 'aguai') {
+            id = 1
+        } else if (this.props.match.params.empresa == 'sao-paulo') {
+            id = 2
+        } else {
+            id = 0
+        }
+        if (prevState.empresaId !== id) {
+            this.setState({ empresaId: id });
             this.buscarRamais();
         }
     }
@@ -53,7 +62,7 @@ class ListarRamais extends React.Component {
                 this.setState({ data: data, isLoading: false });
             })
             .catch(err => console.log(err));
-    }
+    };
 
     pesquisar = event => {
         // console.log(event.target.value);
@@ -98,8 +107,6 @@ class ListarRamais extends React.Component {
     };
 
     render() {
-        console.log(this.state.empresaId);
-
         const { data, isLoading } = this.state;
 
         const tooltipEditar = (props) => (
@@ -140,11 +147,12 @@ class ListarRamais extends React.Component {
                                 <th>Ramal</th>
                                 <th>Telefone</th>
                                 <th>Setor</th>
+                                <th>Cidade</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {data.map((dados, index) => <tr key={index}><td>{index + 1}</td><td>{dados.nome}</td><td>{dados.ramal}</td><td>{dados.telefone}</td><td>{dados.setor}</td>
+                            {data.map((dados, index) => <tr key={index}><td>{index + 1}</td><td>{dados.nome}</td><td>{dados.ramal}</td><td>{dados.telefone}</td><td>{dados.setor}</td><td>{dados.nome_empresa}</td>
                                 <td>
                                     <OverlayTrigger
                                         placement="top"
@@ -170,11 +178,11 @@ class ListarRamais extends React.Component {
     };
 }
 
-const mapStateToProps = state => {
-    return {
-        empresaId: state.empresaId
-    };
-}
+// const mapStateToProps = state => {
+//     return {
+//         empresaId: state.empresaId
+//     };
+// }
 
 // const mapDispatchToProps = dispatch => {
 //     return {
@@ -182,4 +190,5 @@ const mapStateToProps = state => {
 //     };
 // };
 
-export default connect(mapStateToProps)(ListarRamais);
+// export default connect(mapStateToProps)(ListarRamais);
+export default ListarRamais;
