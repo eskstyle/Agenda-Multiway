@@ -40,11 +40,12 @@ class EditarRamal extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                idRamal: this.props.match.params.idRamal
+                ramalId: this.props.match.params.ramalId
             })
         })
 
         const dadosRamal = await responseRamal.json();
+
 
         const responseSetores = await fetch('/api/buscarSetores', {
             method: 'POST',
@@ -52,7 +53,7 @@ class EditarRamal extends React.Component {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                idCidade: dadosRamal[0].cidade_id,
+                cidadeId: dadosRamal[0].cidade_id,
             })
         });
 
@@ -82,8 +83,8 @@ class EditarRamal extends React.Component {
                 nomePessoa: this.state.nomePessoa,
                 numeroRamal: this.state.numeroRamal,
                 numeroTelefone: this.state.numeroTelefone,
-                idSetor: this.state.setorId,
-                idRamal: this.props.match.params.idRamal,
+                setorId: this.state.setorId,
+                ramalId: this.props.match.params.ramalId,
                 acao: 2 // - atualizar
             })
         })
@@ -108,7 +109,7 @@ class EditarRamal extends React.Component {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    idCidade: target.value
+                    cidadeId: target.value
                 })
             })
                 .then(result => result.json())

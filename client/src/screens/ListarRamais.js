@@ -18,7 +18,7 @@ class ListarRamais extends React.Component {
         this.state = {
             data: [],
             isLoading: false,
-            empresaId: null
+            cidadeId: null
         }
     }
 
@@ -36,8 +36,8 @@ class ListarRamais extends React.Component {
         } else {
             id = 0
         }
-        if (prevState.empresaId !== id) {
-            this.setState({ empresaId: id });
+        if (prevState.cidadeId !== id) {
+            this.setState({ cidadeId: id });
             this.buscarRamais();
         }
     }
@@ -51,7 +51,7 @@ class ListarRamais extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                idCidade: this.state.empresaId
+                cidadeId: this.state.cidadeId
             })
         })
             .then(result => result.json())
@@ -89,7 +89,7 @@ class ListarRamais extends React.Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    idRamal: ramalId
+                    ramalId: ramalId
                 })
             })
                 .then(response => response.json())

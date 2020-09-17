@@ -17,8 +17,8 @@ class CadastroRamal extends React.Component {
             nomePessoa: '',
             numeroRamal: '',
             numeroTelefone: '',
-            idSetor: '',
-            idCidade: ''
+            setorId: '',
+            cidadeId: ''
         }
     }
 
@@ -44,7 +44,7 @@ class CadastroRamal extends React.Component {
                 nomePessoa: this.state.nomePessoa,
                 numeroRamal: this.state.numeroRamal,
                 numeroTelefone: this.state.numeroTelefone,
-                idSetor: this.state.idSetor,
+                setorId: this.state.setorId,
                 acao: 1 // - salvar
             })
         })
@@ -61,7 +61,7 @@ class CadastroRamal extends React.Component {
                     nomePessoa: '',
                     numeroRamal: '',
                     numeroTelefone: '',
-                    idSetor: ''
+                    setorId: ''
                 });
             })
             .catch(() => document.getElementsByClassName('alert-erro')[0].style.display = 'block');
@@ -70,14 +70,14 @@ class CadastroRamal extends React.Component {
     handleChange = ({ target }) => {
         this.setState({ [target.name]: target.value });
 
-        if (target.name === "idCidade" && target.value > 0) {
+        if (target.name === "cidadeId" && target.value > 0) {
             fetch('/api/buscarSetores', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    idCidade: target.value
+                    cidadeId: target.value
                 })
             })
                 .then(result => result.json())
@@ -87,7 +87,7 @@ class CadastroRamal extends React.Component {
                 .catch(err => console.log(err));
         }
 
-        if(target.name === "idCidade" && target.value <= 0){
+        if(target.name === "cidadeId" && target.value <= 0){
             this.setState({ listaSetores: [] });
         }
     };
@@ -130,14 +130,14 @@ class CadastroRamal extends React.Component {
                     </Form.Group>
                     <Form.Group controlId="formCadastroCidade">
                         <Form.Label>Cidade:</Form.Label>
-                        <Form.Control as="select" name="idCidade" value={this.state.idCidade} onChange={this.handleChange} required>
+                        <Form.Control as="select" name="cidadeId" value={this.state.cidadeId} onChange={this.handleChange} required>
                             <option value="">Selecione</option>
                             {listaCidades.map(cidade => <option key={cidade.id} value={cidade.id}>{cidade.nome}</option>)}
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="formCadastroSetor">
                         <Form.Label>Setor:</Form.Label>
-                        <Form.Control as="select" name="idSetor" value={this.state.idSetor} onChange={this.handleChange} required>
+                        <Form.Control as="select" name="setorId" value={this.state.setorId} onChange={this.handleChange} required>
                             <option value="">Selecione</option>
                             {listaSetores.map(setor => <option key={setor.id} value={setor.id}>{setor.nome}</option>)}
                         </Form.Control>

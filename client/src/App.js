@@ -18,8 +18,8 @@ function App() {
         <Route path="/cadastro-ramal" component={CadastroRamal} />
         <Route path="/cadastro-setor" component={CadastroSetor} />
         <Route path="/listar-setores" component={ListarSetores} />
-        <Route path="/editar-setor/:idSetor" component={EditarSetor} />
-        <Route path="/editar-ramal/:idRamal" component={EditarRamal} />
+        <Route path="/editar-setor/:setorId" component={EditarSetor} />
+        <Route path="/editar-ramal/:ramalId" component={EditarRamal} />
         <Route path="/:empresa" component={ListarRamais} />
       </Switch>
     </div>

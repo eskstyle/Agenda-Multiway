@@ -12,7 +12,7 @@ class CadastroSetor extends React.Component {
         this.state = {
             data: [],
             nomeSetor: '',
-            idLocal: ''
+            cidadeId: ''
         }
     }
 
@@ -40,7 +40,7 @@ class CadastroSetor extends React.Component {
             },
             body: JSON.stringify({
                 nomeSetor: this.state.nomeSetor,
-                idLocal: this.state.idLocal
+                cidadeId: this.state.cidadeId
             })
         })
             .then(response => {
@@ -56,7 +56,7 @@ class CadastroSetor extends React.Component {
                     nomePessoa: '',
                     numeroRamal: '',
                     numeroTelefone: '',
-                    idSetor: ''
+                    cidadeId: ''
                 });
             })
             .catch(() => document.getElementsByClassName('alert-erro')[0].style.display = 'block');
@@ -92,7 +92,7 @@ class CadastroSetor extends React.Component {
                     </Form.Group>
                     <Form.Group controlId="formCadastroLocal">
                         <Form.Label>Empresa:</Form.Label>
-                        <Form.Control as="select" name="idLocal" value={this.state.idLocal} onChange={this.handleChange.bind(this)} required>
+                        <Form.Control as="select" name="cidadeId" value={this.state.cidadeId} onChange={this.handleChange.bind(this)} required>
                             <option value="">Selecione</option>
                             {data.map(dado => <option key={dado.id} value={dado.id}>{dado.nome}</option>)}
                         </Form.Control>

@@ -13,7 +13,7 @@ class EditarSetor extends React.Component {
         this.state = {
             data: [],
             nomeSetor: '',
-            idLocal: '',
+            localId: '',
             isLoading: false
         }
     }
@@ -38,14 +38,15 @@ class EditarSetor extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                idSetor: this.props.match.params.idSetor
+                setorId: this.props.match.params.setorId
             })
         })
             .then(result => result.json())
             .then(data => {
+                console.log(this.props.match.params.setorId);
                 this.setState({
                     nomeSetor: data[0].nome,
-                    idLocal: data[0].local_id
+                    cidadeId: data[0].cidade_id
                 });
             })
             .catch(err => console.log(err));
@@ -68,8 +69,8 @@ class EditarSetor extends React.Component {
             },
             body: JSON.stringify({
                 nomeSetor: this.state.nomeSetor,
-                idLocal: this.state.idLocal,
-                idSetor: this.props.match.params.idSetor
+                cidadeId: this.state.cidadeId,
+                setorId: this.props.match.params.setorId
             })
         })
             .then(response => {
@@ -122,7 +123,7 @@ class EditarSetor extends React.Component {
                 {/* <HeaderAdmin /> */}
                 <div className="container">
                     <div className="titulo">
-                        <h2>Cadastro Setor</h2>
+                        <h2>Editar Setor</h2>
                     </div>
                     <Form.Group controlId="formCadastroSetor">
                         <Form.Label>Setor:</Form.Label>
@@ -130,7 +131,7 @@ class EditarSetor extends React.Component {
                     </Form.Group>
                     <Form.Group controlId="formCadastroLocal">
                         <Form.Label>Empresa:</Form.Label>
-                        <Form.Control as="select" name="idLocal" value={this.state.idLocal} onChange={this.handleChange.bind(this)} required>
+                        <Form.Control as="select" name="cidadeId" value={this.state.cidadeId} onChange={this.handleChange.bind(this)} required>
                             <option value="">Selecione</option>
                             {dados.map(dado => <option key={dado.id} value={dado.id}>{dado.nome}</option>)}
                         </Form.Control>

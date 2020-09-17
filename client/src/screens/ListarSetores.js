@@ -32,7 +32,7 @@ class CadastroSetor extends React.Component {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                idCidade: 0 // 0 - todos os sertores
+                cidadeId: 0 // 0 - todos os sertores
             })
         })
             .then(result => result.json())
@@ -50,7 +50,7 @@ class CadastroSetor extends React.Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    idSetor: setorId
+                    setorId: setorId
                 })
             })
                 .then(response => response.json())
@@ -102,7 +102,7 @@ class CadastroSetor extends React.Component {
                             <tr>
                                 <th>#</th>
                                 <th>Nome Setor</th>
-                                <th>Local</th>
+                                <th>Cidade</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
@@ -112,7 +112,7 @@ class CadastroSetor extends React.Component {
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{dados.nome}</td>
-                                        <td>{dados.nome_local}</td>
+                                        <td>{dados.nome_cidade}</td>
                                         <td>
                                             <OverlayTrigger
                                                 placement="top"
