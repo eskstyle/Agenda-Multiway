@@ -4,21 +4,33 @@ const router = express.Router();
 const connection = require('../db/db');
 
 router.post('/api/buscarRamais', (req, res) => {
-    const idCidade = req.body.idCidade;
+    const cidadeId = req.body.cidadeId;
 
-    const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor FROM ramal r INNER JOIN setor s ON s.id = r.setor_id WHERE s.local_id = ?`, [idCidade], (err, result) => {
-        if (err) {
-            throw err;
-        }
+    if (cidadeId > 0) {
+        const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_empresa FROM ramal r INNER JOIN setor s ON s.id = r.setor_id INNER JOIN cidade c ON c.id = s.cidade_id WHERE s.cidade_id = ?`, [cidadeId], (err, result) => {
+            if (err) {
+                throw err;
+            }
 
-        res.json(result);
-    });
+            res.json(result);
+        });
+    } else {
+        const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_empresa FROM ramal r INNER JOIN setor s ON s.id = r.setor_id INNER JOIN cidade c ON c.id = s.cidade_id`, (err, result) => {
+            if (err) {
+                throw err;
+            }
+
+            res.json(result);
+        });
+    }
+
 });
 
 router.post('/api/buscarRamal', (req, res) => {
-    const idRamal = req.body.idRamal;
+    const ramalId = req.body.ramalId;
 
-    const query = connection.query(`SELECT r.id, r.data_criacao, r.ramal, r.nome as nome_pessoa, r.telefone, s.id as setor_id, s.nome as nome_setor  FROM ramal r INNER JOIN setor s ON r.setor_id = s.id WHERE r.id = ?`, [idRamal], (err, result) => {
+    const query = connection.query(`SELECT r.id, r.data_criacao, r.ramal, r.nome as nome_pessoa, r.telefone, s.id as setor_id, s.nome as nome_setor, c.id as cidade_id, c.nome as nome_cidade  FROM ramal r INNER JOIN setor s ON r.setor_id = s.id INNER JOIN cidade c ON c.id = s.cidade_id WHERE r.id = ?
+    `, [ramalId], (err, result) => {
         if (err) {
             throw err;
         }
@@ -41,15 +53,15 @@ router.post('/api/pesquisar', (req, res) => {
 
 router.post('/api/salvarRamal', (req, res) => {
     const numeroRamal = req.body.numeroRamal;
-    const idSetor = req.body.idSetor;
-    const idRamal = req.body.idRamal;
+    const setorId = req.body.setorId;
+    const ramalId = req.body.ramalId;
     const nomePessoa = req.body.nomePessoa;
     const numeroTelefone = req.body.numeroTelefone;
     //acao: 1- salvar / 2 - atualizar
     const acao = req.body.acao;
 
     if (acao === 1) {
-        const query = connection.query(`INSERT INTO ramal(ramal, setor_id, nome, telefone) VALUES(?, ?, ?, ?)`, [numeroRamal, idSetor, nomePessoa, numeroTelefone], (err, result) => {
+        const query = connection.query(`INSERT INTO ramal(ramal, setor_id, nome, telefone) VALUES(?, ?, ?, ?)`, [numeroRamal, setorId, nomePessoa, numeroTelefone], (err, result) => {
             if (err) {
                 return res.status(500).send({ error: err });
                 // throw err;
@@ -60,7 +72,7 @@ router.post('/api/salvarRamal', (req, res) => {
             }
         });
     } else if (acao === 2) {
-        const query = connection.query(`UPDATE ramal SET nome = ?, ramal = ?, telefone = ?, setor_id = ? WHERE id = ?`, [nomePessoa, numeroRamal, numeroTelefone, idSetor, idRamal], (err, result) => {
+        const query = connection.query(`UPDATE ramal SET nome = ?, ramal = ?, telefone = ?, setor_id = ? WHERE id = ?`, [nomePessoa, numeroRamal, numeroTelefone, setorId, ramalId], (err, result) => {
             if (err) {
                 return res.status(500).send({ error: err });
                 // throw err;
@@ -79,9 +91,9 @@ router.post('/api/salvarRamal', (req, res) => {
 });
 
 router.post('/api/excluirRamal', (req, res) => {
-    const idRamal = req.body.idRamal;
+    const ramalId = req.body.ramalId;
 
-    const sql = connection.query(`DELETE FROM ramal WHERE id = ? `, [idRamal], (err, result) => {
+    const sql = connection.query(`DELETE FROM ramal WHERE id = ? `, [ramalId], (err, result) => {
         if (err) {
             return res.status(500).send({ error: err });
         }

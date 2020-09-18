@@ -3,9 +3,9 @@ const router = express.Router();
 
 const connection = require('../db/db');
 
-router.get('/api/buscarLocal', (req, res,) => {
+router.get('/api/buscarCidades', (req, res,) => {
 
-    connection.query(`SELECT * FROM local`, (err, result, fields) => {
+    connection.query(`SELECT * FROM cidade`, (err, result) => {
         if (err) {
             throw err;
         }

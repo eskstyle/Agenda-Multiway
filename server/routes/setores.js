@@ -4,20 +4,32 @@ const router = express.Router();
 
 const connection = require('../db/db');
 
-router.get('/api/buscarSetores', (req, res) => {
-    connection.query(`SELECT s.id, s.data_criacao, s.nome, l.nome as nome_local FROM setor s INNER JOIN local l ON s.local_id = l.id;`, (err, result) => {
-        if (err) {
-            throw err;
-        }
+router.post('/api/buscarSetores', (req, res) => {
+    const cidadeId = req.body.cidadeId;
 
-        res.json(result);
-    });
+    if (cidadeId <= 0) {
+        connection.query(`SELECT s.id, s.data_criacao, s.nome, c.nome as nome_cidade FROM setor s INNER JOIN cidade c ON s.cidade_id = c.id`, (err, result) => {
+            if (err) {
+                throw err;
+            }
+
+            res.json(result);
+        });
+    } else {
+        connection.query(`SELECT s.id, s.data_criacao, s.nome, c.nome as nome_cidade FROM setor s INNER JOIN cidade c ON s.cidade_id = c.id WHERE c.id = ?`, [cidadeId], (err, result) => {
+            if (err) {
+                throw err;
+            }
+
+            res.json(result);
+        });
+    }
 });
 
 router.post('/api/buscarSetor', (req, res) => {
-    const idSetor = req.body.idSetor;
+    const setorId = req.body.setorId;
 
-    connection.query(`SELECT * from setor WHERE id = ?;`, [idSetor], (err, result) => {
+    connection.query(`SELECT * from setor WHERE id = ?;`, [setorId], (err, result) => {
         if (err) {
             throw err;
         }
@@ -28,9 +40,9 @@ router.post('/api/buscarSetor', (req, res) => {
 
 router.post('/api/salvarSetor', (req, res) => {
     const nomeSetor = req.body.nomeSetor;
-    const idLocal = req.body.idLocal;
+    const cidadeId = req.body.cidadeId;
 
-    const query = connection.query(`INSERT INTO setor(nome, local_id) VALUES(?, ?)`, [nomeSetor, idLocal], (err, result) => {
+    const query = connection.query(`INSERT INTO setor(nome, cidade_id) VALUES(?, ?)`, [nomeSetor, cidadeId], (err, result) => {
         if (err) {
             return res.status(500).send({ error: err });
             // throw err;
@@ -46,10 +58,10 @@ router.post('/api/salvarSetor', (req, res) => {
 
 router.post('/api/atualizarSetor', (req, res) => {
     const nomeSetor = req.body.nomeSetor;
-    const idLocal = req.body.idLocal;
-    const idSetor = req.body.idSetor;
+    const cidadeId = req.body.cidadeId;
+    const setorId = req.body.setorId;
 
-    const query = connection.query(`UPDATE setor SET nome = ?, local_id = ? WHERE id= ?`, [nomeSetor, idLocal, idSetor], (err, result) => {
+    const query = connection.query(`UPDATE setor SET nome = ?, cidade_id = ? WHERE id= ?`, [nomeSetor, cidadeId, setorId], (err, result) => {
         if (err) {
             return res.status(500).send({ error: err });
             // throw err;
@@ -62,17 +74,17 @@ router.post('/api/atualizarSetor', (req, res) => {
 
 //UM SETOR SÓ PODERÁ SER DELETADO SE NÃO HOUVER MAIS RAMAIS CADASTRADOS PARA ELE.
 router.post('/api/excluirSetor', (req, res) => {
-    const idSetor = req.body.idSetor;
+    const setorId = req.body.setorId;
 
     //BUSCA SE EXISTE RAMAIS PARA AQUELE SETOR.
-    connection.query(`SELECT * FROM ramal WHERE setor_id = ?`, [idSetor], (err, result) => {
+    connection.query(`SELECT * FROM ramal WHERE setor_id = ?`, [setorId], (err, result) => {
         if (err) {
             return res.status(500).send({ error: err });
         }
 
         //CASO NÃO HOUVER SERÁ O SETOR SERÁ DELETADO.
         if (result.length <= 0) {
-            connection.query(`DELETE FROM setor WHERE id = ? `, [idSetor], (err, result) => {
+            connection.query(`DELETE FROM setor WHERE id = ? `, [setorId], (err, result) => {
                 if (err) {
                     return res.status(500).send({ error: err });
                 }
