@@ -4,8 +4,6 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
-import { HeaderAdmin } from './components/Header';
-import Footer from './components/Footer';
 
 import { createStore } from '@reduxjs/toolkit';
 import reducer from './store/reducer';
@@ -17,9 +15,7 @@ const store = createStore(reducer);
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <HeaderAdmin />
       <App />
-      <Footer />
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

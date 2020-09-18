@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { FcFullTrash } from "react-icons/fc";
 import { FcEngineering } from "react-icons/fc";
 import { Tooltip } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 class ListarRamais extends React.Component {
 
@@ -27,6 +28,8 @@ class ListarRamais extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        // console.log(this.props.usuario);
+
         let id = 0;
 
         if (this.props.match.params.empresa === 'aguai') {
@@ -175,11 +178,11 @@ class ListarRamais extends React.Component {
     };
 }
 
-// const mapStateToProps = state => {
-//     return {
-//         empresaId: state.empresaId
-//     };
-// }
+const mapStateToProps = state => {
+    return {
+        usuario: state.usuario
+    };
+}
 
 // const mapDispatchToProps = dispatch => {
 //     return {
@@ -187,5 +190,5 @@ class ListarRamais extends React.Component {
 //     };
 // };
 
-// export default connect(mapStateToProps)(ListarRamais);
-export default ListarRamais;
+export default connect(mapStateToProps)(ListarRamais);
+// export default ListarRamais;

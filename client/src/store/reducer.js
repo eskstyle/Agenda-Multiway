@@ -3,8 +3,8 @@ import * as actionTypes from './actionTypes';
 const initialState = {
     empresaId: 1,
     usuario: {
-        nome: null,
-        senha: null
+        usuario: null,
+        token: null
     }
 };
 
@@ -16,13 +16,17 @@ const reducer = (state = initialState, action) => {
                 empresaId: action.payload
             }
         case actionTypes.LOGIN:
-            return state;
+            return {
+                ...state,
+                usuario: action.payload.usuario,
+                senha: action.payload.senha
+            }
         case actionTypes.LOGOUT:
             return {
                 ...state,
                 usuario: {
-                    nome: null,
-                    senha: null
+                    usuario: null,
+                    token: null
                 }
             }
         default:
