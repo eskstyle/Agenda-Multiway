@@ -8,7 +8,7 @@ router.post('/api/buscarSetores', (req, res) => {
     const cidadeId = req.body.cidadeId;
 
     if (cidadeId <= 0) {
-        connection.query(`SELECT s.id, s.data_criacao, s.nome, c.nome as nome_cidade FROM setor s INNER JOIN cidade c ON s.cidade_id = c.id`, (err, result) => {
+        connection.query(`SELECT s.id, s.data_criacao, s.nome, c.nome as nome_cidade FROM setor s INNER JOIN cidade c ON s.cidade_id = c.id ORDER BY s.nome ASC`, (err, result) => {
             if (err) {
                 throw err;
             }
@@ -16,7 +16,7 @@ router.post('/api/buscarSetores', (req, res) => {
             res.json(result);
         });
     } else {
-        connection.query(`SELECT s.id, s.data_criacao, s.nome, c.nome as nome_cidade FROM setor s INNER JOIN cidade c ON s.cidade_id = c.id WHERE c.id = ?`, [cidadeId], (err, result) => {
+        connection.query(`SELECT s.id, s.data_criacao, s.nome, c.nome as nome_cidade FROM setor s INNER JOIN cidade c ON s.cidade_id = c.id WHERE c.id = ? ORDER BY s.nome ASC`, [cidadeId], (err, result) => {
             if (err) {
                 throw err;
             }
