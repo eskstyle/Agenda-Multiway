@@ -62,17 +62,12 @@ class CadastroSetor extends React.Component {
             .catch(() => document.getElementsByClassName('alert-erro')[0].style.display = 'block');
     };
 
-    esconderErro = visibility => {
-        console.log(visibility);
-        if (visibility) {
-            document.getElementsByClassName('alert-erro')[0].style.display = 'none'
-        }
+    esconderErro = () => {
+        document.getElementsByClassName('alert-erro')[0].style.display = 'none'
     };
 
-    esconderSucesso = visibility => {
-        if (visibility) {
-            document.getElementsByClassName('alert-sucesso')[0].style.display = 'none'
-        }
+    esconderSucesso = () => {
+        document.getElementsByClassName('alert-sucesso')[0].style.display = 'none'
     };
 
     render() {
@@ -98,10 +93,10 @@ class CadastroSetor extends React.Component {
                         </Form.Control>
                     </Form.Group>
                     <div className="alert-erro">
-                        <Alert variant='danger' onClose={() => this.esconderErro(true)} dismissible>Alguma coisa deu errada ao salvar suas informações!</Alert>
+                        <Alert variant='danger' onClose={() => this.esconderErro()} dismissible>Alguma coisa deu errada ao salvar suas informações!</Alert>
                     </div>
                     <div className="alert-sucesso">
-                        <Alert variant='success' onClose={() => this.esconderSucesso(true)} dismissible>Salvo com sucesso!</Alert>
+                        <Alert variant='success' onClose={() => this.esconderSucesso()} dismissible>Salvo com sucesso!</Alert>
                     </div>
                     <Button className="botoes-cor" variant="primary" type="button" onClick={this.salvarSetor} >Salvar</Button>
                 </div>

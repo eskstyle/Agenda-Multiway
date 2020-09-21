@@ -52,7 +52,6 @@ class CadastroRamal extends React.Component {
                 if (!response.ok) {
                     throw Error(response.statusText);
                 }
-
                 response.json();
             })
             .then(() => {
@@ -71,6 +70,7 @@ class CadastroRamal extends React.Component {
         this.setState({ [target.name]: target.value });
 
         if (target.name === "cidadeId" && target.value > 0) {
+            document.getElementsByName('setorId')[0].children[0].innerHTML = "Carregando...";
             fetch('/api/buscarSetores', {
                 method: 'POST',
                 headers: {
@@ -82,6 +82,7 @@ class CadastroRamal extends React.Component {
             })
                 .then(result => result.json())
                 .then(listaSetores => {
+                    document.getElementsByName('setorId')[0].children[0].innerHTML = "Selecione...";
                     this.setState({ listaSetores: listaSetores });
                 })
                 .catch(err => console.log(err));

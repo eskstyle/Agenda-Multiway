@@ -5,18 +5,6 @@ const md5 = require('md5');
 
 const connection = require('../db/db');
 
-// router.get('/api/buscarUsuario', (req, res,) => {
-//     const usuario = req.body.usuario;
-//     // const usuario = "douglas";
-
-//     connection.query(`SELECT * FROM administradores a WHERE a.usuario = ?`, [usuario], (err, result, fields) => {
-//         if (err) {
-//             throw err;
-//         }
-//         res.json(result);
-//     })
-// });
-
 router.post('/api/login', (req, res,) => {
     const usuario = req.body.usuario;
     const senha = req.body.senha;
@@ -27,7 +15,14 @@ router.post('/api/login', (req, res,) => {
         if (err) {
             throw err;
         }
-        res.status(200).send({ autenticado: true, token: senhaMd5 });
+
+        if (result.length > 0) {
+            res.status(200).send({ autenticado: true, token: senhaMd5 });
+        } else {
+            res.status(200).send({ autenticado: false, token: senhaMd5 });
+        }
+
+        // res.status(200).send({ autenticado: true, token: senhaMd5 });
     })
 });
 

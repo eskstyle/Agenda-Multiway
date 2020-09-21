@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as actionTypes from '../store/actionTypes';
 
@@ -32,10 +32,16 @@ class Login extends React.Component {
             .then(({ autenticado, token }) => {
                 if (autenticado) {
                     this.props.onLogin(this.state.usuario, token);
+                }else{
+                    document.getElementsByClassName('alert-erro-login')[0].style.display = 'block';
                 }
             })
             .catch(err => console.log(err));
     }
+
+    esconderErro = () => {
+        document.getElementsByClassName('alert-erro-login')[0].style.display = 'none'
+    };
 
     render() {
         return (
@@ -49,7 +55,10 @@ class Login extends React.Component {
                         <Form.Label>Senha</Form.Label>
                         <Form.Control type="password" placeholder="Digite sua senha" name="senha" value={this.state.senha} onChange={this.handleChange} />
                     </Form.Group>
-                    <Button className="botoes-cor" onClick={this.logar}>Entrar</Button>
+                    <Button className="botoes-cor" onClick={this.logar}><span>Entrar</span></Button>
+                    <div className="alert-erro-login">
+                        <Alert variant='danger' onClose={() => this.esconderErro(true)} dismissible>Usuário ou senha incorretos!</Alert>
+                    </div>
                 </div>
             </div>
         );

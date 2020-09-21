@@ -111,6 +111,35 @@ html, body {
 .botoes-cor {
   background-color: rgb(16, 143, 16);
   border-color: rgb(16, 143, 16);
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.botoes-cor span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.botoes-cor span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.botoes-cor:hover span {
+  padding-right: 25px;
+  
+}
+
+.botoes-cor:hover span:after {
+  opacity: 1;
+  right: 0;
 }
 
 .botoes-cor:hover {
@@ -121,10 +150,15 @@ html, body {
 .botoes-cor:focus {
   background-color: rgb(43, 185, 43);
   border-color: rgb(43, 185, 43);
-}
+} 
 
 .alert-erro, .alert-sucesso {
   display: none;
+}
+
+.alert-erro-login {
+  display: none;
+  width: 200px;
 }
 
 .loading_container {
@@ -150,7 +184,7 @@ html, body {
 .container-forms-login {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   border-radius: 10px 10px 10px 10px;
   -moz-border-radius: 10px 10px 10px 10px;
