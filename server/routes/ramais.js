@@ -7,7 +7,7 @@ router.post('/api/buscarRamais', (req, res) => {
     const cidadeId = req.body.cidadeId;
 
     if (cidadeId > 0) {
-        const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_cidade FROM ramal r INNER JOIN setor s ON s.id = r.setor_id INNER JOIN cidade c ON c.id = s.cidade_id WHERE s.cidade_id = ?`, [cidadeId], (err, result) => {
+        const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_cidade FROM ramal r INNER JOIN setor s ON s.id = r.setor_id INNER JOIN cidade c ON c.id = s.cidade_id WHERE s.cidade_id = ? ORDER BY r.nome ASC`, [cidadeId], (err, result) => {
             if (err) {
                 throw err;
             }
@@ -15,7 +15,7 @@ router.post('/api/buscarRamais', (req, res) => {
             res.json(result);
         });
     } else {
-        const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_cidade FROM ramal r INNER JOIN setor s ON s.id = r.setor_id INNER JOIN cidade c ON c.id = s.cidade_id`, (err, result) => {
+        const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_cidade FROM ramal r INNER JOIN setor s ON s.id = r.setor_id INNER JOIN cidade c ON c.id = s.cidade_id ORDER BY r.nome ASC`, (err, result) => {
             if (err) {
                 throw err;
             }

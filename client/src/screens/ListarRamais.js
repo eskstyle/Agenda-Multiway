@@ -24,28 +24,29 @@ class ListarRamais extends React.Component {
     }
 
     componentDidMount() {
-        this.buscarRamais();
+        this.buscarRamais(0);
     }
 
     componentDidUpdate(prevProps, prevState) {
 
-        let id;
+        let id = 0;
 
-        if (this.props.match.params.empresa === 'aguai') {
+        if (this.props.match.params.empresa === "aguai") {
             id = 1;
-        } else if (this.props.match.params.empresa === 'sao-paulo') {
+        } else if (this.props.match.params.empresa === "sao-paulo") {
             id = 2;
         } else {
             id = 0;
         }
+
         if (prevState.cidadeId !== id) {
             this.setState({ cidadeId: id });
-            this.buscarRamais();
+            this.buscarRamais(id);
         }
     }
 
-    buscarRamais = () => {
-        this.setState({ isLoading: true });
+    buscarRamais = (cidadeId) => {
+        // this.setState({ isLoading: true });
 
         fetch('api/buscarRamais', {
             method: 'POST',
@@ -53,7 +54,7 @@ class ListarRamais extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                cidadeId: this.state.cidadeId
+                cidadeId: cidadeId
             })
         })
             .then(result => result.json())
