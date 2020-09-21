@@ -27,7 +27,7 @@ class EditarRamal extends React.Component {
     //chamado após o render da tela. Recomendado pelo react para carregar dados na tela.
     //Esta no modo sync ou seja, cada chamada no fetch irá esperar (await) a busca terminar parar executar o código abaixo. 
     //o motivo de eu ter feito essa busca diferente do EditarSetor é que eu preciso que o dropdown da cidade e do setor estejam 
-    //populados antes de setar os valores, caso contrário não irá funcionar de deixar selecionado
+    //populados antes de setar os valores, caso contrário não irá funcionar de deixar selecionado.
     async componentDidMount() {
         this.setState({ isLoading: true });
 

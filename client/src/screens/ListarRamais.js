@@ -18,6 +18,7 @@ class ListarRamais extends React.Component {
 
         this.state = {
             data: [],
+            listaRamais: [],
             isLoading: false,
             cidadeId: null
         }
@@ -59,29 +60,35 @@ class ListarRamais extends React.Component {
         })
             .then(result => result.json())
             .then(data => {
-                this.setState({ data: data, isLoading: false });
+                this.setState({ data: data, listaRamais: data, isLoading: false });
             })
             .catch(err => console.log(err));
     };
 
     pesquisar = event => {
         // console.log(event.target.value);
-        fetch('/api/pesquisar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                pesquisar: event.target.value,
-                cidadeId: this.state.cidadeId
-            })
-        })
-            .then(result => result.json())
-            .then(data => {
-                console.log(data);
-                this.setState({ data: data });
-            })
-            .catch(err => console.log(err));
+        const listaRamais = this.state.data;
+
+        const listaPesquisa = listaRamais.filter(ramal => ramal.nome.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0);
+
+        this.setState({ listaRamais: listaPesquisa });
+        
+        // fetch('/api/pesquisar', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         pesquisar: event.target.value,
+        //         cidadeId: this.state.cidadeId
+        //     })
+        // })
+        //     .then(result => result.json())
+        //     .then(data => {
+        //         console.log(data);
+        //         this.setState({ data: data });
+        //     })
+        //     .catch(err => console.log(err));
     };
 
     excluirRamal = ramalId => {
@@ -113,7 +120,7 @@ class ListarRamais extends React.Component {
     };
 
     render() {
-        const { data, isLoading } = this.state;
+        const { data, isLoading, listaRamais } = this.state;
 
         const tooltipEditar = (props) => (
             <Tooltip id="button-editar" {...props}>
@@ -158,7 +165,7 @@ class ListarRamais extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.map((dados, index) =>
+                            {listaRamais.map((dados, index) =>
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{dados.nome}</td>
