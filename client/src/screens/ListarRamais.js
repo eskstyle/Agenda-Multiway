@@ -85,6 +85,10 @@ class ListarRamais extends React.Component {
     };
 
     excluirRamal = ramalId => {
+        if (this.props.usuario.token === null) {
+            return;
+        }
+
         const resposta = window.confirm("Tem certeza que deseja excluir este ramal?");
 
         if (resposta) {

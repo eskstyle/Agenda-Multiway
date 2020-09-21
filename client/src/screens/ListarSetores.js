@@ -10,6 +10,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-bootstrap';
 
+import { connect } from 'react-redux';
+
 class CadastroSetor extends React.Component {
 
     constructor(props) {
@@ -41,6 +43,10 @@ class CadastroSetor extends React.Component {
     }
 
     excluirSetor = setorId => {
+        if (this.props.usuario.token === null) {
+            return;
+        }
+
         const resposta = window.confirm("Tem certeza que deseja excluir este setor?");
 
         if (resposta) {
@@ -141,4 +147,10 @@ class CadastroSetor extends React.Component {
     }
 };
 
-export default CadastroSetor;
+const mapStateToProps = state => {
+    return {
+        usuario: state.usuario
+    };
+}
+
+export default connect(mapStateToProps)(CadastroSetor);
