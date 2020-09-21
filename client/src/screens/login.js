@@ -39,7 +39,7 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div className="container container-login">
+            <div className="container-login">
                 <div className="container-forms-login">
                     <Form.Group>
                         <Form.Label>Usuário</Form.Label>
@@ -49,7 +49,7 @@ class Login extends React.Component {
                         <Form.Label>Senha</Form.Label>
                         <Form.Control type="password" placeholder="Digite sua senha" name="senha" value={this.state.senha} onChange={this.handleChange} />
                     </Form.Group>
-                    <Button onClick={this.logar}>Entrar</Button>
+                    <Button className="botoes-cor" onClick={this.logar}>Entrar</Button>
                 </div>
             </div>
         );

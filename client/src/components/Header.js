@@ -26,8 +26,6 @@ export const Header = () => {
 
 export const HeaderAdmin = () => {
 
-    const usuario = useSelector(state => state.usuario);
-
     return (
         <Navbar className="header">
             <Link to="/" className="header-titulo navbar-brand">

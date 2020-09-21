@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Table from 'react-bootstrap/Table';
 import FormControl from 'react-bootstrap/FormControl';
@@ -30,7 +30,7 @@ class ListarRamais extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         // console.log(this.props.usuario);
 
-        let id = 0;
+        let id;
 
         if (this.props.match.params.empresa === 'aguai') {
             id = 1
@@ -148,28 +148,36 @@ class ListarRamais extends React.Component {
                                 <th>Telefone</th>
                                 <th>Setor</th>
                                 <th>Cidade</th>
-                                <th>Opções</th>
+                                {this.props.usuario.token !== null && <th>Opções</th>}
                             </tr>
                         </thead>
                         <tbody>
-                            {data.map((dados, index) => <tr key={index}><td>{index + 1}</td><td>{dados.nome}</td><td>{dados.ramal}</td><td>{dados.telefone}</td><td>{dados.setor}</td><td>{dados.nome_empresa}</td>
-                                <td>
-                                    <OverlayTrigger
-                                        placement="top"
-                                        delay={{ show: 250, hide: 200 }}
-                                        overlay={tooltipEditar}
-                                    >
-                                        <Link to={`/editar-ramal/${dados.id}`}><FcEngineering size="25"></FcEngineering></Link>
-                                    </OverlayTrigger>
-                                    <OverlayTrigger
-                                        placement="top"
-                                        delay={{ show: 250, hide: 200 }}
-                                        overlay={tooltipExcluir}
-                                    >
-                                        <Button variant="link" onClick={this.excluirRamal.bind(this, dados.id)}><FcFullTrash size="25"></FcFullTrash></Button>
-                                    </OverlayTrigger>
-                                </td>
-                            </tr>)}
+                            {data.map((dados, index) =>
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{dados.nome}</td>
+                                    <td>{dados.ramal}</td>
+                                    <td>{dados.telefone}</td>
+                                    <td>{dados.setor}</td>
+                                    <td>{dados.nome_empresa}</td>
+                                    {this.props.usuario.token !== null &&
+                                        <td>
+                                            <OverlayTrigger
+                                                placement="top"
+                                                delay={{ show: 250, hide: 200 }}
+                                                overlay={tooltipEditar}
+                                            >
+                                                <Link to={`/editar-ramal/${dados.id}`}><FcEngineering size="25"></FcEngineering></Link>
+                                            </OverlayTrigger>
+                                            <OverlayTrigger
+                                                placement="top"
+                                                delay={{ show: 250, hide: 200 }}
+                                                overlay={tooltipExcluir}
+                                            >
+                                                <Button variant="link" onClick={this.excluirRamal.bind(this, dados.id)}><FcFullTrash size="25"></FcFullTrash></Button>
+                                            </OverlayTrigger>
+                                        </td>}
+                                </tr>)}
                         </tbody>
                     </Table>
                 </div>

@@ -14,14 +14,17 @@ import ListarSetores from './screens/ListarSetores';
 import EditarSetor from './screens/EditarSetor';
 import EditarRamal from './screens/EditarRamal';
 import Login from './screens/Login';
+import Logout from './screens/Logout';
 
 const PrivateRoute = props => {
   const { usuario, component, path } = props;
 
+  console.log(path);
+
   if (usuario.token === null) {
     return <Redirect to="/login" />;
   }
-  return <Route to={path} component={component} />;
+  return <Route path={path} component={component} />;
 };
 
 function App({ location }) {
@@ -37,11 +40,13 @@ function App({ location }) {
         <PrivateRoute path="/cadastro-ramal" component={ListarSetores} usuario={usuario} />
         <PrivateRoute path="/editar-setor/:setorId" component={EditarSetor} usuario={usuario} />
         <PrivateRoute path="/editar-ramal/:ramalId" component={EditarRamal} usuario={usuario} />
+        <PrivateRoute path="/logout" component={Logout} usuario={usuario} />
         <Route path="/login" component={Login} />
         <Route path="/:empresa" component={ListarRamais} />
         <Route path="/" exact component={ListarRamais} />
       </Switch>
-      {location.pathname !== '/login' && <Footer />}
+      <Footer />
+      {/* {location.pathname !== '/login' && <Footer />} */}
     </div>
   );
 }
