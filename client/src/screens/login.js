@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as actionTypes from '../store/actionTypes';
+import { Redirect } from 'react-router-dom';
 
 class Login extends React.Component {
     constructor(props) {
@@ -32,7 +33,8 @@ class Login extends React.Component {
             .then(({ autenticado, token }) => {
                 if (autenticado) {
                     this.props.onLogin(this.state.usuario, token);
-                }else{
+
+                } else {
                     document.getElementsByClassName('alert-erro-login')[0].style.display = 'block';
                 }
             })
@@ -44,6 +46,11 @@ class Login extends React.Component {
     };
 
     render() {
+
+        if (this.props.usuario.token) {
+            return <Redirect to="/" />;
+        }
+
         return (
             <div className="container-login">
                 <div className="container-forms-login">
@@ -65,10 +72,16 @@ class Login extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        usuario: state.usuario
+    }
+};
+
 const mapDispatchToProps = dispatch => {
     return {
         onLogin: (usuario, token) => dispatch({ type: actionTypes.LOGIN, payload: { usuario: { usuario: usuario, token: token } } })
     };
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

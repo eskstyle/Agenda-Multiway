@@ -69,10 +69,10 @@ class ListarRamais extends React.Component {
         // console.log(event.target.value);
         const listaRamais = this.state.data;
 
-        const listaPesquisa = listaRamais.filter(ramal => ramal.nome.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0);
+        const listaPesquisa = listaRamais.filter(pessoa => pessoa.nome.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0);
 
         this.setState({ listaRamais: listaPesquisa });
-        
+
         // fetch('/api/pesquisar', {
         //     method: 'POST',
         //     headers: {
