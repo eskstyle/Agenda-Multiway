@@ -28,16 +28,15 @@ class ListarRamais extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // console.log(this.props.usuario);
 
         let id;
 
         if (this.props.match.params.empresa === 'aguai') {
-            id = 1
+            id = 1;
         } else if (this.props.match.params.empresa === 'sao-paulo') {
-            id = 2
+            id = 2;
         } else {
-            id = 0
+            id = 0;
         }
         if (prevState.cidadeId !== id) {
             this.setState({ cidadeId: id });
@@ -72,11 +71,13 @@ class ListarRamais extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                pesquisar: event.target.value
+                pesquisar: event.target.value,
+                cidadeId: this.state.cidadeId
             })
         })
             .then(result => result.json())
             .then(data => {
+                console.log(data);
                 this.setState({ data: data });
             })
             .catch(err => console.log(err));
@@ -159,7 +160,7 @@ class ListarRamais extends React.Component {
                                     <td>{dados.ramal}</td>
                                     <td>{dados.telefone}</td>
                                     <td>{dados.setor}</td>
-                                    <td>{dados.nome_empresa}</td>
+                                    <td>{dados.nome_cidade}</td>
                                     {this.props.usuario.token !== null &&
                                         <td>
                                             <OverlayTrigger

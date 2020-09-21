@@ -7,7 +7,7 @@ router.post('/api/buscarRamais', (req, res) => {
     const cidadeId = req.body.cidadeId;
 
     if (cidadeId > 0) {
-        const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_empresa FROM ramal r INNER JOIN setor s ON s.id = r.setor_id INNER JOIN cidade c ON c.id = s.cidade_id WHERE s.cidade_id = ?`, [cidadeId], (err, result) => {
+        const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_cidade FROM ramal r INNER JOIN setor s ON s.id = r.setor_id INNER JOIN cidade c ON c.id = s.cidade_id WHERE s.cidade_id = ?`, [cidadeId], (err, result) => {
             if (err) {
                 throw err;
             }
@@ -15,7 +15,7 @@ router.post('/api/buscarRamais', (req, res) => {
             res.json(result);
         });
     } else {
-        const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_empresa FROM ramal r INNER JOIN setor s ON s.id = r.setor_id INNER JOIN cidade c ON c.id = s.cidade_id`, (err, result) => {
+        const query = connection.query(`SELECT r.id, r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_cidade FROM ramal r INNER JOIN setor s ON s.id = r.setor_id INNER JOIN cidade c ON c.id = s.cidade_id`, (err, result) => {
             if (err) {
                 throw err;
             }
@@ -41,14 +41,25 @@ router.post('/api/buscarRamal', (req, res) => {
 
 router.post('/api/pesquisar', (req, res) => {
     const pesquisa = req.body.pesquisar;
+    const cidadeId = req.body.cidadeId;
 
-    const query = connection.query(`SELECT r.ramal, r.nome, r.telefone, s.nome as setor FROM ramal r INNER JOIN setor s ON r.setor_id = s.id WHERE r.nome LIKE '%` + pesquisa + `%' OR s.nome LIKE '%` + pesquisa + `%'`, (err, result) => {
-        if (err) {
-            throw err;
-        }
+    if (cidadeId <= 0) {
+        const query = connection.query(`SELECT r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_cidade FROM ramal r INNER JOIN setor s ON r.setor_id = s.id INNER JOIN cidade c ON s.cidade_id = c.id WHERE r.nome LIKE '%` + pesquisa + `%' OR s.nome LIKE '%` + pesquisa + `%'`, (err, result) => {
+            if (err) {
+                throw err;
+            }
 
-        res.json(result);
-    });
+            res.json(result);
+        });
+    } else {
+        const query = connection.query(`SELECT r.ramal, r.nome, r.telefone, s.nome as setor, c.nome as nome_cidade FROM ramal r INNER JOIN setor s ON r.setor_id = s.id INNER JOIN cidade c ON s.cidade_id = c.id WHERE (r.nome LIKE '%` + pesquisa + `%' OR s.nome LIKE '%` + pesquisa + `%') and s.cidade_id = ?`, [cidadeId], (err, result) => {
+            if (err) {
+                throw err;
+            }
+
+            res.json(result);
+        });
+    }
 });
 
 router.post('/api/salvarRamal', (req, res) => {
