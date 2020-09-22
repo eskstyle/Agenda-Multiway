@@ -99,7 +99,7 @@ class ListarRamais extends React.Component {
                 .then(data => {
                     alert(data.response);
                     if (data.excluido) {
-                        this.setState({ data: this.state.data.filter(dado => dado.id !== ramalId) });
+                        this.setState({ listaRamais: this.state.listaRamais.filter(dado => dado.id !== ramalId) });
                     }
                 })
                 .catch(err => console.log(err));
