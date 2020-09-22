@@ -10,11 +10,11 @@ import { useSelector } from 'react-redux';
 export const Header = () => {
     return (
         <Navbar className="header">
-            <Navbar.Brand href="/" className="header-titulo">
+            <Link to="/" className="header-titulo navbar-brand">
                 <img src={logo} className="logo" alt="" />
-            </Navbar.Brand>
+            </Link>
             <Nav className="justify-content-start itens">
-            <Link to="/aguai" className="header-itens nav-link">AGUAÍ</Link>
+                <Link to="/aguai" className="header-itens nav-link">AGUAÍ</Link>
                 <Link to="/sao-paulo" className="header-itens nav-link">SÃO PAULO</Link>
             </Nav>
             <Nav className="justify-content-end">

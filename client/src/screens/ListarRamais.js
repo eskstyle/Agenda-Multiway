@@ -163,7 +163,7 @@ class ListarRamais extends React.Component {
                                     <td>{dados.setor}</td>
                                     <td>{dados.nome_cidade}</td>
                                     {this.props.usuario.token !== null &&
-                                        <td>
+                                        <td className="tabela-td-opcoes">
                                             <OverlayTrigger
                                                 placement="top"
                                                 delay={{ show: 250, hide: 200 }}
@@ -176,7 +176,7 @@ class ListarRamais extends React.Component {
                                                 delay={{ show: 250, hide: 200 }}
                                                 overlay={tooltipExcluir}
                                             >
-                                                <Button variant="link" onClick={this.excluirRamal.bind(this, dados.id)}><FcFullTrash size="25"></FcFullTrash></Button>
+                                                <Button className="btn-excluir" variant="link" onClick={this.excluirRamal.bind(this, dados.id)}><FcFullTrash size="25"></FcFullTrash></Button>
                                             </OverlayTrigger>
                                         </td>}
                                 </tr>)}

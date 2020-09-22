@@ -211,6 +211,82 @@ html, body {
   background-color: rgb(255, 255, 255);
 }
 
-/* @media (min-width: 400px ) and (max-width: 800px){
-    
-} */
+.btn-link {
+  padding: 0;
+  margin-left: 10px;
+}
+
+@media (max-width: 380px) {
+  body {
+    font-size: 10px;
+  }
+  .logo {
+    width: 70px;
+  }
+  .tabela-td-opcoes {
+    min-width: 90px;
+  }
+  .footer {
+    flex-direction: column;
+    height: 110px;
+  }
+  .footer-paragrafo {
+    font-size: 12px;
+  }
+  .icones-sociais {
+    position: relative;
+    min-width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
+@media (min-width: 381px) and (max-width: 599px) {
+  body {
+    font-size: 13px;
+  }
+  .logo {
+    width: 100px;
+  }
+  .tabela-td-opcoes {
+    min-width: 90px;
+  }
+  .footer {
+    flex-direction: column;
+    height: 110px;
+  }
+  .footer-paragrafo {
+    /* font-size: 12px; */
+  }
+  .icones-sociais {
+    position: relative;
+    min-width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
+/* começo dos tablets */
+
+@media (min-width: 600px) {
+  .tabela-td-opcoes {
+    min-width: 90px;
+  }
+  
+}
+
+/* tablets e alguns PCs já */
+
+@media (min-width: 900px) {
+  .logo {
+    width: 150px;
+  }
+}
+
+/* PC e tablets de altas resoluções */
+
+@media (min-width: 1200px) {}
+
+/* PC de alta resolução */
+
+@media (min-width: 1800px) {}
