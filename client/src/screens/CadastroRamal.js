@@ -18,7 +18,8 @@ class CadastroRamal extends React.Component {
             numeroRamal: '',
             numeroTelefone: '',
             setorId: '',
-            cidadeId: ''
+            cidadeId: '',
+            email: '',
         }
     }
 
@@ -45,6 +46,7 @@ class CadastroRamal extends React.Component {
                 numeroRamal: this.state.numeroRamal,
                 numeroTelefone: this.state.numeroTelefone,
                 setorId: this.state.setorId,
+                email: this.state.email,
                 acao: 1 // - salvar
             })
         })
@@ -60,7 +62,8 @@ class CadastroRamal extends React.Component {
                     nomePessoa: '',
                     numeroRamal: '',
                     numeroTelefone: '',
-                    setorId: ''
+                    setorId: '',
+                    email: ''
                 });
             })
             .catch(() => document.getElementsByClassName('alert-erro')[0].style.display = 'block');
@@ -88,7 +91,7 @@ class CadastroRamal extends React.Component {
                 .catch(err => console.log(err));
         }
 
-        if(target.name === "cidadeId" && target.value <= 0){
+        if (target.name === "cidadeId" && target.value <= 0) {
             this.setState({ listaSetores: [] });
         }
     };
@@ -123,11 +126,14 @@ class CadastroRamal extends React.Component {
                     <Form.Group controlId="formCadastroRamal">
                         <Form.Label>Ramal:</Form.Label>
                         <MaskedFormControl type="text" placeholder="Digite o número do ramal" name="numeroRamal" mask='111' value={this.state.numeroRamal} onChange={this.handleChange} />
-
                     </Form.Group>
                     <Form.Group controlId="formCadastroTelefone">
                         <Form.Label>Telefone:</Form.Label>
                         <MaskedFormControl type="text" placeholder="Digite o número do telefone" name="numeroTelefone" mask='(11) 11111-1111' value={this.state.numeroTelefone} onChange={this.handleChange} />
+                    </Form.Group>
+                    <Form.Group controlId="formCadastroEmail">
+                        <Form.Label>Email:</Form.Label>
+                        <Form.Control type="text" placeholder="Digite o email" name="email" value={this.state.email} onChange={this.handleChange} />
                     </Form.Group>
                     <Form.Group controlId="formCadastroCidade">
                         <Form.Label>Cidade:</Form.Label>

@@ -20,6 +20,7 @@ class EditarRamal extends React.Component {
             numeroTelefone: '',
             setorId: '',
             cidadeId: '',
+            email: '',
             isLoading: false
         }
     }
@@ -78,6 +79,7 @@ class EditarRamal extends React.Component {
                 numeroTelefone: dadosRamal[0].telefone,
                 cidadeId: dadosRamal[0].cidade_id,
                 setorId: dadosRamal[0].setor_id,
+                email: dadosRamal[0].email
             });
 
             //estou deixando o código que remove o loading dentro do try pra caso der erro ele continuar no loading infinito indicando um problema.
@@ -100,6 +102,7 @@ class EditarRamal extends React.Component {
                 numeroTelefone: this.state.numeroTelefone,
                 setorId: this.state.setorId,
                 ramalId: this.props.match.params.ramalId,
+                email: this.state.email,
                 acao: 2 // - atualizar
             })
         })
@@ -176,16 +179,20 @@ class EditarRamal extends React.Component {
                     </div>
                     <Form.Group controlId="formCadastroPessoa">
                         <Form.Label>Nome:</Form.Label>
-                        <Form.Control type="text" placeholder="Digite o nome" name="nomePessoa" value={this.state.nomePessoa} onChange={this.handleChange} required />
+                        <Form.Control type="text" placeholder="Digite o nome" name="nomePessoa" value={this.state.nomePessoa !== null ? this.state.nomePessoa : ""} onChange={this.handleChange} required />
                     </Form.Group>
                     <Form.Group controlId="formCadastroRamal">
                         <Form.Label>Ramal:</Form.Label>
-                        <MaskedFormControl type="text" placeholder="Digite o número do ramal" name="numeroRamal" mask='111' value={this.state.numeroRamal} onChange={this.handleChange} />
+                        <MaskedFormControl type="text" placeholder="Digite o número do ramal" name="numeroRamal" mask='111' value={this.state.numeroRamal !== null ? this.state.numeroRamal : ""} onChange={this.handleChange} />
 
                     </Form.Group>
                     <Form.Group controlId="formCadastroTelefone">
                         <Form.Label>Telefone:</Form.Label>
-                        <MaskedFormControl type="text" placeholder="Digite o número do telefone" name="numeroTelefone" mask='(11) 11111-1111' value={this.state.numeroTelefone} onChange={this.handleChange} />
+                        <MaskedFormControl type="text" placeholder="Digite o número do telefone" name="numeroTelefone" mask='(11) 11111-1111' value={this.state.numeroTelefone !== null ? this.state.numeroTelefone : ""} onChange={this.handleChange} />
+                    </Form.Group>
+                    <Form.Group controlId="formCadastroEmail">
+                        <Form.Label>Email:</Form.Label>
+                        <Form.Control type="text" placeholder="Digite o email" name="email" value={this.state.email !== null ? this.state.email : ""} onChange={this.handleChange} />
                     </Form.Group>
                     <Form.Group controlId="formCadastroCidade">
                         <Form.Label>Cidade:</Form.Label>

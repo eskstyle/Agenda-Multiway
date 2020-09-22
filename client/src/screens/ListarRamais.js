@@ -25,7 +25,20 @@ class ListarRamais extends React.Component {
     }
 
     componentDidMount() {
-        this.buscarRamais(0);
+        fetch('api/buscarRamais', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                cidadeId: 0
+            })
+        })
+            .then(result => result.json())
+            .then(data => {
+                this.setState({ data: data, listaRamais: data, isLoading: false });
+            })
+            .catch(err => console.log(err));
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -40,55 +53,29 @@ class ListarRamais extends React.Component {
             id = 0;
         }
 
+        let listaRamaisCidade = this.state.data;
+
+        if (id !== 0) {
+            listaRamaisCidade = this.state.data.filter(ramal => ramal.cidade_id === id);
+        }
+
         if (prevState.cidadeId !== id) {
-            this.setState({ cidadeId: id });
-            this.buscarRamais(id);
+            this.setState({ listaRamais: listaRamaisCidade, cidadeId: id });
         }
     }
 
-    buscarRamais = (cidadeId) => {
-        // this.setState({ isLoading: true });
-
-        fetch('api/buscarRamais', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                cidadeId: cidadeId
-            })
-        })
-            .then(result => result.json())
-            .then(data => {
-                this.setState({ data: data, listaRamais: data, isLoading: false });
-            })
-            .catch(err => console.log(err));
-    };
-
     pesquisar = event => {
-        // console.log(event.target.value);
-        const listaRamais = this.state.data;
+        let listaRamais = this.state.data;
+        if (this.state.cidadeId !== 0) {
+            listaRamais = this.state.data.filter(ramal => ramal.cidade_id === this.state.cidadeId);
+        }
 
-        const listaPesquisa = listaRamais.filter(pessoa => pessoa.nome.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0);
+        //filtra no array de objetos todos os que no nome conter o que está sendo pesquisado, retorna um array novo com todos que batem com a busca.
+        const listaPesquisaNome = listaRamais.filter(pessoa => pessoa.nome.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0);
+        const listaPesquisaSetor = listaRamais.filter(pessoa => pessoa.setor.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0);
+        const listaPesquisa = [...listaPesquisaNome, ...listaPesquisaSetor];
 
         this.setState({ listaRamais: listaPesquisa });
-
-        // fetch('/api/pesquisar', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         pesquisar: event.target.value,
-        //         cidadeId: this.state.cidadeId
-        //     })
-        // })
-        //     .then(result => result.json())
-        //     .then(data => {
-        //         console.log(data);
-        //         this.setState({ data: data });
-        //     })
-        //     .catch(err => console.log(err));
     };
 
     excluirRamal = ramalId => {
@@ -159,6 +146,7 @@ class ListarRamais extends React.Component {
                                 <th>Nome</th>
                                 <th>Ramal</th>
                                 <th>Telefone</th>
+                                <th>Email</th>
                                 <th>Setor</th>
                                 <th>Cidade</th>
                                 {this.props.usuario.token !== null && <th>Opções</th>}
@@ -171,6 +159,7 @@ class ListarRamais extends React.Component {
                                     <td>{dados.nome}</td>
                                     <td>{dados.ramal}</td>
                                     <td>{dados.telefone}</td>
+                                    <td>{dados.email}</td>
                                     <td>{dados.setor}</td>
                                     <td>{dados.nome_cidade}</td>
                                     {this.props.usuario.token !== null &&
