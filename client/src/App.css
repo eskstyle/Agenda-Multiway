@@ -216,6 +216,10 @@ html, body {
   margin-left: 10px;
 }
 
+.dropdown-item.active, .dropdown-item:active {
+  background-color: rgb(43, 185, 43);
+}
+
 @media (max-width: 380px) {
   body {
     font-size: 10px;
@@ -241,6 +245,8 @@ html, body {
   }
 }
 
+/* celulares de resolução muito baixa */
+
 @media (min-width: 381px) and (max-width: 599px) {
   body {
     font-size: 13px;
@@ -254,9 +260,6 @@ html, body {
   .footer {
     flex-direction: column;
     height: 110px;
-  }
-  .footer-paragrafo {
-    /* font-size: 12px; */
   }
   .icones-sociais {
     position: relative;
@@ -272,7 +275,6 @@ html, body {
   .tabela-td-opcoes {
     min-width: 90px;
   }
-  
 }
 
 /* tablets e alguns PCs já */

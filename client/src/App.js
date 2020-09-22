@@ -19,8 +19,6 @@ import Logout from './screens/Logout';
 const PrivateRoute = props => {
   const { usuario, component, path } = props;
 
-  console.log(path);
-
   if (usuario.token === null) {
     return <Redirect to="/login" />;
   }
