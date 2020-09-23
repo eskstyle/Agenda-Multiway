@@ -43,7 +43,6 @@ class EditarSetor extends React.Component {
         })
             .then(result => result.json())
             .then(data => {
-                console.log(this.props.match.params.setorId);
                 this.setState({
                     nomeSetor: data[0].nome,
                     cidadeId: data[0].cidade_id

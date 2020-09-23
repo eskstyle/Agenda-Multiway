@@ -107,7 +107,7 @@ class ListarRamais extends React.Component {
     };
 
     render() {
-        const { data, isLoading, listaRamais } = this.state;
+        const { isLoading, listaRamais } = this.state;
 
         const tooltipEditar = (props) => (
             <Tooltip id="button-editar" {...props}>
