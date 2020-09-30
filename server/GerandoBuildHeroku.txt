@@ -1,0 +1,25 @@
+https://www.freecodecamp.org/news/deploy-a-react-node-app-to/
+
+1 - Acesse a pasta client.
+2 - Rode npm run build.
+3 - Será gerado uma pasta chamada "build" dentro da pasta client, recorte a pasta "build" e coloque dentro da pasta server, caso já existir uma basta remover e colar a nova.
+4 - Dentro da pasta server tem um arquivo chamado server.js, ele atualmente já está configurado para acessar a pasta build e renderizar o conteúdo dela.
+5 - Se quiser testar se tudo está funcionand perfeitamente, basta no terminal acessar a pasta do server (cd server) e rodar npm start.
+6 - Pronto a agenda está configurada para ser atualizada no git e no heroku posteriormente.
+
+
+Código caso o server.js não esteja configurado:
+
+*OBS: Importe o path caso contrário dará erro /// const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+
+Start no package.json:
+
+Basta colar este código dentro de "scrpits" e garanta que o arquivo server.js exista na pasta -> "start": "node ./server.js"
+
