@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
-import MaskedFormControl from 'react-bootstrap-maskedinput';
+import InputMask from 'react-input-mask';
 
 class EditarRamal extends React.Component {
 
@@ -183,12 +183,11 @@ class EditarRamal extends React.Component {
                     </Form.Group>
                     <Form.Group controlId="formCadastroRamal">
                         <Form.Label>Ramal:</Form.Label>
-                        <MaskedFormControl type="text" placeholder="Digite o número do ramal" name="numeroRamal" mask='111' value={this.state.numeroRamal !== null ? this.state.numeroRamal : ""} onChange={this.handleChange} />
-
+                        <InputMask className="form-control" placeholder="Digite o número do ramal" mask="999" type="text" name="numeroRamal" value={this.state.numeroRamal} onChange={this.handleChange} />
                     </Form.Group>
                     <Form.Group controlId="formCadastroTelefone">
                         <Form.Label>Telefone:</Form.Label>
-                        <MaskedFormControl type="text" placeholder="Digite o número do telefone" name="numeroTelefone" mask='(11) 11111-1111' value={this.state.numeroTelefone !== null ? this.state.numeroTelefone : ""} onChange={this.handleChange} />
+                        <InputMask className="form-control" placeholder="Digite o número do telefone" mask="(99) 99999-9999" type="text" name="numeroTelefone" value={this.state.numeroTelefone} onChange={this.handleChange} />
                     </Form.Group>
                     <Form.Group controlId="formCadastroEmail">
                         <Form.Label>Email:</Form.Label>
