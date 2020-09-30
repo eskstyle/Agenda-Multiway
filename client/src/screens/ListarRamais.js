@@ -25,6 +25,8 @@ class ListarRamais extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({ isLoading: true });
+
         fetch('api/buscarRamais', {
             method: 'POST',
             headers: {
