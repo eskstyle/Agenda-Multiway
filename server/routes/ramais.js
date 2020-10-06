@@ -33,9 +33,19 @@ router.post('/api/buscarRamais', (req, res) => {
 
 router.post('/api/buscarRamal', (req, res) => {
     const ramalId = req.body.ramalId;
+    const token = req.headers['x-access-token'];
 
     if (!ramalId) {
         return res.status(406).json({ mensagem: 'ramalId não pode estar vazio!' });
+    } else if (!token) {
+        return res.status(401).json({ mensagem: 'Nenhum token de acesso foi passado' });
+    }
+
+    try {
+        jwt.verify(token, process.env.SECRET);
+    }
+    catch (err) {
+        return res.status(401).json(err);
     }
 
     try {
@@ -124,7 +134,6 @@ router.post('/api/salvarRamal', (req, res) => {
 
 router.post('/api/excluirRamal', (req, res) => {
     const ramalId = req.body.ramalId;
-
     const token = req.headers['x-access-token'];
 
     if (!ramalId) {
