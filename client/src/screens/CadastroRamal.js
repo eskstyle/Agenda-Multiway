@@ -6,6 +6,8 @@ import Alert from 'react-bootstrap/Alert';
 
 import InputMask from 'react-input-mask';
 
+import { connect } from 'react-redux';
+
 class CadastroRamal extends React.Component {
 
     constructor(props) {
@@ -39,7 +41,8 @@ class CadastroRamal extends React.Component {
         fetch('/api/salvarRamal', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': this.props.usuario.token
             },
             body: JSON.stringify({
                 nomePessoa: this.state.nomePessoa,
@@ -77,7 +80,8 @@ class CadastroRamal extends React.Component {
             fetch('/api/buscarSetores', {
                 method: 'POST',
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    'x-access-token': this.props.usuario.token
                 },
                 body: JSON.stringify({
                     cidadeId: target.value
@@ -163,4 +167,10 @@ class CadastroRamal extends React.Component {
     };
 };
 
-export default CadastroRamal;
+const mapStateToProps = state => {
+    return {
+        usuario: state.usuario
+    };
+}
+
+export default connect(mapStateToProps)(CadastroRamal);

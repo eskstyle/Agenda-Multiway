@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
+import { connect } from 'react-redux';
+
 class CadastroSetor extends React.Component {
 
     constructor(props) {
@@ -36,7 +38,8 @@ class CadastroSetor extends React.Component {
         fetch('/api/salvarSetor', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': this.props.usuario.token
             },
             body: JSON.stringify({
                 nomeSetor: this.state.nomeSetor,
@@ -107,4 +110,10 @@ class CadastroSetor extends React.Component {
     }
 };
 
-export default CadastroSetor;
+const mapStateToProps = state => {
+    return {
+        usuario: state.usuario
+    };
+}
+
+export default connect(mapStateToProps)(CadastroSetor);

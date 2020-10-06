@@ -31,7 +31,8 @@ class CadastroSetor extends React.Component {
         fetch('/api/buscarSetores', {
             method: 'POST',
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'x-access-token': this.props.usuario.token
             },
             body: JSON.stringify({
                 cidadeId: 0 // 0 - todos os sertores
@@ -53,7 +54,8 @@ class CadastroSetor extends React.Component {
             fetch('/api/excluirSetor', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'x-access-token': this.props.usuario.token
                 },
                 body: JSON.stringify({
                     setorId: setorId

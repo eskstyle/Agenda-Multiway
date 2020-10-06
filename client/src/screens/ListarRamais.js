@@ -112,7 +112,8 @@ class ListarRamais extends React.Component {
             fetch('/api/excluirRamal', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'x-access-token': this.props.usuario.token
                 },
                 body: JSON.stringify({
                     ramalId: ramalId
@@ -130,6 +131,7 @@ class ListarRamais extends React.Component {
     };
 
     render() {
+
         const { isLoading, listaRamais } = this.state;
 
         const tooltipEditar = (props) => (

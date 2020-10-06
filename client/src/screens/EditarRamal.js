@@ -7,6 +7,8 @@ import Spinner from 'react-bootstrap/Spinner';
 
 import InputMask from 'react-input-mask';
 
+import { connect } from 'react-redux';
+
 class EditarRamal extends React.Component {
 
     constructor(props) {
@@ -45,7 +47,8 @@ class EditarRamal extends React.Component {
             const responseRamal = await fetch('/api/buscarRamal', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'x-access-token': this.props.usuario.token
                 },
                 body: JSON.stringify({
                     ramalId: this.props.match.params.ramalId
@@ -59,7 +62,8 @@ class EditarRamal extends React.Component {
             const responseSetores = await fetch('/api/buscarSetores', {
                 method: 'POST',
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    'x-access-token': this.props.usuario.token
                 },
                 body: JSON.stringify({
                     cidadeId: dadosRamal[0].cidade_id,
@@ -94,7 +98,8 @@ class EditarRamal extends React.Component {
         fetch('/api/salvarRamal', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': this.props.usuario.token
             },
             body: JSON.stringify({
                 nomePessoa: this.state.nomePessoa,
@@ -220,4 +225,10 @@ class EditarRamal extends React.Component {
     };
 };
 
-export default EditarRamal;
+const mapStateToProps = state => {
+    return {
+        usuario: state.usuario
+    };
+}
+
+export default connect(mapStateToProps)(EditarRamal);

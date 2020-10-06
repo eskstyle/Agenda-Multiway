@@ -3,6 +3,9 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+
+import { connect } from 'react-redux';
+
 import Spinner from 'react-bootstrap/Spinner';
 
 class EditarSetor extends React.Component {
@@ -35,7 +38,8 @@ class EditarSetor extends React.Component {
         fetch('/api/buscarSetor', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': this.props.usuario.token
             },
             body: JSON.stringify({
                 setorId: this.props.match.params.setorId
@@ -64,7 +68,8 @@ class EditarSetor extends React.Component {
         fetch('/api/atualizarSetor', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': this.props.usuario.token
             },
             body: JSON.stringify({
                 nomeSetor: this.state.nomeSetor,
@@ -150,4 +155,10 @@ class EditarSetor extends React.Component {
     }
 };
 
-export default EditarSetor;
+const mapStateToProps = state => {
+    return {
+        usuario: state.usuario
+    };
+}
+
+export default connect(mapStateToProps)(EditarSetor);

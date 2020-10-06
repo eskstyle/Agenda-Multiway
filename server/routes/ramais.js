@@ -78,8 +78,6 @@ router.post('/api/salvarRamal', (req, res) => {
         return res.status(406).json({ mensagem: 'numeroRamal não pode estar vazio!' });
     } else if (!setorId) {
         return res.status(406).json({ mensagem: 'setorId não pode estar vazio!' });
-    } else if (!ramalId) {
-        return res.status(406).json({ mensagem: 'ramalId não pode estar vazio!' });
     } else if (!nomePessoa) {
         return res.status(406).json({ mensagem: 'nomePessoa não pode estar vazio!' });
     } else if (!numeroTelefone) {
