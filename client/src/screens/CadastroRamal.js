@@ -129,7 +129,8 @@ class CadastroRamal extends React.Component {
                     </Form.Group>
                     <Form.Group controlId="formCadastroTelefone">
                         <Form.Label>Telefone:</Form.Label>
-                        <InputMask className="form-control" placeholder="Digite o número do telefone" mask="(99) 99999-9999" type="text" name="numeroTelefone" value={this.state.numeroTelefone} onChange={this.handleChange} />                    </Form.Group>
+                        <InputMask className="form-control" placeholder="Digite o número do telefone" mask="(99) 99999-9999" type="text" name="numeroTelefone" value={this.state.numeroTelefone} onChange={this.handleChange} />
+                    </Form.Group>
                     <Form.Group controlId="formCadastroEmail">
                         <Form.Label>Email:</Form.Label>
                         <Form.Control type="text" placeholder="Digite o email" name="email" value={this.state.email} onChange={this.handleChange} />

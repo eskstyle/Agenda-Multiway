@@ -25,6 +25,8 @@ class ListarRamais extends React.Component {
     }
 
     componentDidMount() {
+        const id = this.verificaCidadeId();
+
         this.setState({ isLoading: true });
 
         fetch('api/buscarRamais', {
@@ -38,13 +40,33 @@ class ListarRamais extends React.Component {
         })
             .then(result => result.json())
             .then(data => {
-                this.setState({ data: data, listaRamais: data, isLoading: false });
+                if (id !== 0) {
+                    const listaRamaisCidade = data.filter(ramal => ramal.cidade_id === id);
+                    this.setState({ data: data, listaRamais: listaRamaisCidade, isLoading: false });
+                } else {
+                    this.setState({ data: data, listaRamais: data, isLoading: false });
+                }
             })
             .catch(err => console.log(err));
     }
 
     componentDidUpdate(prevProps, prevState) {
+        const id = this.verificaCidadeId();
 
+        let listaRamaisCidade = this.state.data;
+
+        if (id !== 0) {
+            listaRamaisCidade = this.state.data.filter(ramal => ramal.cidade_id === id);
+        }
+
+        // console.log(listaRamaisCidade);
+
+        if (prevState.cidadeId !== id) {
+            this.setState({ listaRamais: listaRamaisCidade, cidadeId: id });
+        }
+    }
+
+    verificaCidadeId = () => {
         let id = 0;
 
         if (this.props.match.params.empresa === "aguai") {
@@ -55,29 +77,28 @@ class ListarRamais extends React.Component {
             id = 0;
         }
 
-        let listaRamaisCidade = this.state.data;
-
-        if (id !== 0) {
-            listaRamaisCidade = this.state.data.filter(ramal => ramal.cidade_id === id);
-        }
-
-        if (prevState.cidadeId !== id) {
-            this.setState({ listaRamais: listaRamaisCidade, cidadeId: id });
-        }
-    }
+        return id;
+    };
 
     pesquisar = event => {
         let listaRamais = this.state.data;
-        if (this.state.cidadeId !== 0) {
-            listaRamais = this.state.data.filter(ramal => ramal.cidade_id === this.state.cidadeId);
+
+        if (event.target.value.toLowerCase().trim() === '') {
+            this.setState({ listaRamais: listaRamais });
+        } else {
+            let listaRamais = this.state.data;
+            if (this.state.cidadeId !== 0) {
+                listaRamais = this.state.data.filter(ramal => ramal.cidade_id === this.state.cidadeId);
+            }
+
+            //filtra no array de objetos todos os que no nome conter o que está sendo pesquisado, retorna um array novo com todos que batem com a busca.
+            const listaPesquisaNome = listaRamais.filter(pessoa => pessoa.nome.toLowerCase().indexOf(event.target.value.toLowerCase().trim()) >= 0);
+            const listaPesquisaSetor = listaRamais.filter(pessoa => pessoa.setor.toLowerCase().indexOf(event.target.value.toLowerCase().trim()) >= 0);
+            const listaPesquisa = [...listaPesquisaNome, ...listaPesquisaSetor];
+
+
+            this.setState({ listaRamais: listaPesquisa });
         }
-
-        //filtra no array de objetos todos os que no nome conter o que está sendo pesquisado, retorna um array novo com todos que batem com a busca.
-        const listaPesquisaNome = listaRamais.filter(pessoa => pessoa.nome.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0);
-        const listaPesquisaSetor = listaRamais.filter(pessoa => pessoa.setor.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0);
-        const listaPesquisa = [...listaPesquisaNome, ...listaPesquisaSetor];
-
-        this.setState({ listaRamais: listaPesquisa });
     };
 
     excluirRamal = ramalId => {

@@ -1,12 +1,15 @@
 const path = require('path');
 
 const express = require('express');
+require("dotenv").config();
 const bodyParser = require('body-parser');
 
 const ramais = require('./routes/ramais');
 const setores = require('./routes/setores');
 const cidades = require('./routes/cidades');
 const administradores = require('./routes/administradores');
+
+const port = process.env.PORT || 8080;
 
 const app = express();
 
@@ -25,6 +28,9 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(5000, () => {
+app.listen(port, () => {
     console.log("Server Iniciado!");
 });
+
+
+// "build": "webpack",

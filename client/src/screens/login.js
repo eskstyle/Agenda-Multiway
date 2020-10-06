@@ -33,7 +33,6 @@ class Login extends React.Component {
             .then(({ autenticado, token }) => {
                 if (autenticado) {
                     this.props.onLogin(this.state.usuario, token);
-
                 } else {
                     document.getElementsByClassName('alert-erro-login')[0].style.display = 'block';
                 }

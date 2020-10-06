@@ -1,11 +1,13 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
+
 const router = express.Router();
 
 const md5 = require('md5');
 
 const connection = require('../db/db');
 
-router.post('/api/login', (req, res,) => {
+router.post('/api/login', (req, res) => {
     const usuario = req.body.usuario;
     const senha = req.body.senha;
 
@@ -17,12 +19,13 @@ router.post('/api/login', (req, res,) => {
         }
 
         if (result.length > 0) {
-            res.status(200).send({ autenticado: true, token: senhaMd5 });
+            // Cria um token com 1 hora de expiração.
+            let token = jwt.sign({ usuario: usuario, senha: senhaMd5 }, process.env.SECRET, { expiresIn: 60 * 60 });
+            res.status(200).send({ autenticado: true, token: token });
         } else {
-            res.status(200).send({ autenticado: false, token: senhaMd5 });
+            res.status(200).send({ autenticado: false, token: null });
         }
 
-        // res.status(200).send({ autenticado: true, token: senhaMd5 });
     })
 });
 
