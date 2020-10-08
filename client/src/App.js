@@ -15,6 +15,7 @@ import EditarSetor from './screens/EditarSetor';
 import EditarRamal from './screens/EditarRamal';
 import Login from './screens/Login';
 import Logout from './screens/Logout';
+import { verificaToken } from './utils/token';
 
 const PrivateRoute = props => {
   const { usuario, component, path } = props;
@@ -30,7 +31,7 @@ function App({ location }) {
 
   return (
     <div className="App">
-      {usuario.token === null ? < Header /> : <HeaderAdmin />}
+      {verificaToken(usuario.expiresIn) ? < Header /> : <HeaderAdmin />}
       <Switch>
         <PrivateRoute path="/cadastro-ramal" component={CadastroRamal} usuario={usuario} />
         <PrivateRoute path="/cadastro-setor" component={CadastroSetor} usuario={usuario} />

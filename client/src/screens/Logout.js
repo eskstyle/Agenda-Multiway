@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actionTypes from '../store/actionTypes';
+import { logout } from '../store/actions/index';
 
 class Logout extends React.Component {
 
     componentDidMount() {
         this.props.onLogout();
     }
-    
+
     render() {
         return null
     }
@@ -15,7 +15,7 @@ class Logout extends React.Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLogout: () => dispatch({ type: actionTypes.LOGOUT })
+        onLogout: () => dispatch(logout())
     };
 };
 

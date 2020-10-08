@@ -3,6 +3,8 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import { verificaToken } from '../utils/token';
+import { Redirect } from 'react-router-dom';
 
 import InputMask from 'react-input-mask';
 
@@ -22,10 +24,15 @@ class CadastroRamal extends React.Component {
             setorId: '',
             cidadeId: '',
             email: '',
+            isTokenExpired: false
         }
     }
 
     componentDidMount() {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
+
         fetch('/api/buscarCidades', {
             method: 'GET',
         })
@@ -37,6 +44,9 @@ class CadastroRamal extends React.Component {
     }
 
     salvarRamal = () => {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
 
         fetch('/api/salvarRamal', {
             method: 'POST',
@@ -54,8 +64,12 @@ class CadastroRamal extends React.Component {
             })
         })
             .then(response => {
+                if (response.status === 401) {
+                    throw new Error({ codigo: response.status });
+                }
+
                 if (!response.ok) {
-                    throw Error(response.statusText);
+                    throw new Error({ mensagem: response.statusText });
                 }
                 response.json();
             })
@@ -69,13 +83,24 @@ class CadastroRamal extends React.Component {
                     email: ''
                 });
             })
-            .catch(() => document.getElementsByClassName('alert-erro')[0].style.display = 'block');
+            .catch((err) => {
+                console.log(err);
+                if (err.codigo === 401) {
+                    this.state({ tokenExpirado: true });
+                } else {
+                    document.getElementsByClassName('alert-erro')[0].style.display = 'block';
+                }
+            });
     };
 
     handleChange = ({ target }) => {
         this.setState({ [target.name]: target.value });
 
         if (target.name === "cidadeId" && target.value > 0) {
+            if (verificaToken(this.props.usuario.expiresIn)) {
+                return this.setState({ isTokenExpired: true });
+            }
+
             document.getElementsByName('setorId')[0].children[0].innerHTML = "Carregando...";
             fetch('/api/buscarSetores', {
                 method: 'POST',
@@ -115,7 +140,11 @@ class CadastroRamal extends React.Component {
 
     render() {
 
-        const { listaCidades, listaSetores } = this.state;
+        const { listaCidades, listaSetores, isTokenExpired } = this.state;
+
+        if (isTokenExpired) {
+            return <Redirect to='/logout' />;
+        }
 
         return (
             <div className="tela">

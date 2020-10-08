@@ -10,10 +10,10 @@ export const Footer = () => {
         <div className="footer">
             <div className="footer-paragrafo">Agenda Multiway 2020 - Todos os direitos reservados.</div>
             <div className="icones-sociais">
-                <a href="https://www.multiwayinfra.com.br/" target="_blank" rel="noopener noreferrer"> <FaFacebook size="30" color="#fff" /></a>
-                <a href="https://www.youtube.com/user/Multiway2012/videos" target="_blank" rel="noopener noreferrer"><FaYoutube size="30" color="#fff" /></a>
-                <a href="https://www.linkedin.com/company/multiway/" target="_blank" rel="noopener noreferrer"><FaLinkedin size="30" color="#fff" /></a>
-                <a href="https://instagram.com/multiway_tl" target="_blank" rel="noopener noreferrer"><FaInstagram size="30" color="#fff" /></a>
+                <a href="https://www.facebook.com/GrupoMultiway" target="_blank" rel="noopener noreferrer"> <FaFacebook size="30" color="black" /></a>
+                <a href="https://www.youtube.com/user/Multiway2012/videos" target="_blank" rel="noopener noreferrer"><FaYoutube size="30" color="black" /></a>
+                <a href="https://www.linkedin.com/company/multiway/" target="_blank" rel="noopener noreferrer"><FaLinkedin size="30" color="black" /></a>
+                <a href="https://instagram.com/multiway_tl" target="_blank" rel="noopener noreferrer"><FaInstagram size="30" color="black" /></a>
             </div>
         </div >
     );

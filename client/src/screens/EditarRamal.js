@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+import { verificaToken } from '../utils/token';
+import { Redirect } from 'react-router-dom';
 
 import InputMask from 'react-input-mask';
 
@@ -23,7 +25,8 @@ class EditarRamal extends React.Component {
             setorId: '',
             cidadeId: '',
             email: '',
-            isLoading: false
+            isLoading: false,
+            isTokenExpired: false
         }
     }
 
@@ -32,6 +35,10 @@ class EditarRamal extends React.Component {
     //o motivo de eu ter feito essa busca diferente do EditarSetor é que eu preciso que o dropdown da cidade e do setor estejam 
     //populados antes de setar os valores, caso contrário não irá funcionar de deixar selecionado.
     async componentDidMount() {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
+
         this.setState({ isLoading: true });
 
         try {
@@ -94,6 +101,9 @@ class EditarRamal extends React.Component {
     }
 
     salvarRamal = () => {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
 
         fetch('/api/salvarRamal', {
             method: 'POST',
@@ -130,6 +140,9 @@ class EditarRamal extends React.Component {
         //utilizado para verificar se o dropdown da cidade foi alterado, caso sim, ele deverá recarregar o dropdown do setor com os setores da cidade escolhida.
         if (target.name === "cidadeId" && target.value > 0) {
             document.getElementsByName('setorId')[0].children[0].innerHTML = "Carregando...";
+            if (verificaToken(this.props.usuario.expiresIn)) {
+                return this.setState({ isTokenExpired: true });
+            }
 
             fetch('/api/buscarSetores', {
                 method: 'POST',
@@ -164,7 +177,11 @@ class EditarRamal extends React.Component {
 
     render() {
 
-        const { isLoading, listaCidades, listaSetores } = this.state;
+        const { isLoading, listaCidades, listaSetores, isTokenExpired } = this.state;
+
+        if (isTokenExpired) {
+            return <Redirect to='/logout' />;
+        }
 
         if (isLoading) {
             return (

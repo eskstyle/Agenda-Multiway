@@ -55,7 +55,7 @@ router.post('/api/buscarRamal', (req, res) => {
                 throw err;
             }
 
-            res.json(result);
+            return res.status(200).json(result);
         });
     } catch (err) {
         return res.status(500).json("Erro ao buscar o ramal");

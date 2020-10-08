@@ -4,7 +4,8 @@ const initialState = {
     empresaId: 1,
     usuario: {
         usuario: null,
-        token: null
+        token: null,
+        expiresIn: null,
     }
 };
 
@@ -19,14 +20,16 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 usuario: action.payload.usuario,
-                senha: action.payload.senha
+                senha: action.payload.senha,
+                expiresIn: action.payload.expiresIn
             }
         case actionTypes.LOGOUT:
             return {
                 ...state,
                 usuario: {
                     usuario: null,
-                    token: null
+                    token: null,
+                    expiresIn: null
                 }
             }
         default:

@@ -6,8 +6,9 @@ import Table from 'react-bootstrap/Table';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
+import { verificaToken } from '../utils/token';
 
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Tooltip } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
@@ -21,11 +22,16 @@ class CadastroSetor extends React.Component {
             data: [],
             nomeSetor: '',
             idLocal: '',
-            isLoading: false
+            isLoading: false,
+            isTokenExpired: false
         }
     }
 
     componentDidMount() {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
+
         this.setState({ isLoading: true });
 
         fetch('/api/buscarSetores', {
@@ -44,6 +50,10 @@ class CadastroSetor extends React.Component {
     }
 
     excluirSetor = setorId => {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
+
         if (this.props.usuario.token === null) {
             return;
         }
@@ -73,8 +83,11 @@ class CadastroSetor extends React.Component {
     };
 
     render() {
+        const { data, isLoading, isTokenExpired } = this.state;
 
-        const { data, isLoading } = this.state;
+        if (isTokenExpired) {
+            return <Redirect to="/logout" />;
+        }
 
         const tooltipEditar = (props) => (
             <Tooltip id="button-editar" {...props}>

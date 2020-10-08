@@ -3,8 +3,11 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
+
+import { verificaToken } from '../utils/token';
 
 class CadastroSetor extends React.Component {
 
@@ -14,11 +17,16 @@ class CadastroSetor extends React.Component {
         this.state = {
             data: [],
             nomeSetor: '',
-            cidadeId: ''
+            cidadeId: '',
+            isTokenExpired: false
         }
     }
 
     componentDidMount() {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
+
         fetch('/api/buscarCidades', {
             method: 'GET',
         })
@@ -34,6 +42,9 @@ class CadastroSetor extends React.Component {
     };
 
     salvarSetor = () => {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
 
         fetch('/api/salvarSetor', {
             method: 'POST',
@@ -74,8 +85,11 @@ class CadastroSetor extends React.Component {
     };
 
     render() {
+        const { data, isTokenExpired } = this.state;
 
-        const { data } = this.state;
+        if (isTokenExpired) {
+            return <Redirect to='/logout' />;
+        }
 
         return (
             <div className="tela">

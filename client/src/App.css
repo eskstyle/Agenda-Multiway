@@ -9,17 +9,28 @@ html, body {
 .tela {
   position: relative;
   min-height: 100vh;
+  background-color: rgba(236, 236, 236, 0.300);
+  background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, .8)), url("./images/logoM.png");
+  margin-bottom: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .header {
-  background-color: rgb(63, 194, 63);
+  background-color: rgba(224, 224, 224, 0.500);
   height: 50px;
   flex-shrink: 0;
+  border: 1px;
+  -webkit-box-shadow: 0px 10px 10px -6px rgba(14, 5, 5, 0.2);
+  -moz-box-shadow: 0px 10px 10px -6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 10px 10px -6px rgba(0, 0, 0, 0.2);
+  z-index: 10;
 }
 
 .header-titulo {
   color: black !important;
   font-weight: bold;
+  margin-bottom: 1%;
 }
 
 .logo {
@@ -31,14 +42,14 @@ html, body {
 }
 
 .header-itens {
-  color: white !important;
+  color: black !important;
   font-weight: bold;
   text-align: center;
   margin-left: 1%;
 }
 
 .header-item-entrar {
-  color: white !important;
+  color: black !important;
   font-weight: bold;
   text-align: center;
   margin-left: 1%;
@@ -58,17 +69,22 @@ html, body {
 }
 
 .dropdown-menu-header .nav-link {
-  color: white !important;
+  color: black !important;
 }
 
 .footer {
-  background-color: green;
+  background-color: rgba(224, 224, 224, 0.500);
   height: 50px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
+  border: 1px;
+  -webkit-box-shadow: 0px -13px 10px -6px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px -13px 10px -6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px -13px 10px -6px rgba(0, 0, 0, 0.2);
+  z-index: 10;
 }
 
 .container {
@@ -80,7 +96,7 @@ html, body {
   justify-content: center;
   align-items: center;
   font-size: 14px;
-  color: white;
+  color: black;
   height: 100%;
 }
 
@@ -104,8 +120,16 @@ html, body {
   margin-bottom: 2%;
 }
 
+.table-bordered, .table td, .table th, .table tr, .thead {
+  border: 1px solid black !important;
+}
+
 .tabela-ramais {
   margin-top: 40px;
+}
+
+.campo-pesquisar {
+  border: 1px solid black;
 }
 
 .botoes-cor {
@@ -177,7 +201,9 @@ html, body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex: 1
+  flex: 1;
+  width: 100%;
+  background-color: rgba(236, 236, 236, 0.300);
 }
 
 .container-forms-login {
@@ -204,11 +230,6 @@ html, body {
   display: flex;
   flex-direction: column;
   flex: 1
-}
-
-.container-login {
-  width: 100%;
-  background-color: rgb(255, 255, 255);
 }
 
 .btn-link {

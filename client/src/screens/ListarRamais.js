@@ -5,11 +5,12 @@ import FormControl from 'react-bootstrap/FormControl';
 import Spinner from 'react-bootstrap/Spinner';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { FcFullTrash } from "react-icons/fc";
 import { FcEngineering } from "react-icons/fc";
 import { Tooltip } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { verificaToken } from '../utils/token';
 
 class ListarRamais extends React.Component {
 
@@ -102,6 +103,10 @@ class ListarRamais extends React.Component {
     };
 
     excluirRamal = ramalId => {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
+
         if (this.props.usuario.token === null) {
             return;
         }
@@ -132,7 +137,11 @@ class ListarRamais extends React.Component {
 
     render() {
 
-        const { isLoading, listaRamais } = this.state;
+        const { isLoading, listaRamais, isTokenExpired } = this.state;
+
+        if (isTokenExpired) {
+            return <Redirect to='/logout' />;
+        }
 
         const tooltipEditar = (props) => (
             <Tooltip id="button-editar" {...props}>
@@ -162,7 +171,7 @@ class ListarRamais extends React.Component {
                 <div className="container">
                     <div className="titulo">
                         <h2>Lista de Ramais</h2>
-                        <FormControl placeholder="Pesquisar por nome ou setor" onChange={this.pesquisar.bind(this)} />
+                        <FormControl className="campo-pesquisar" placeholder="Pesquisar por nome ou setor" onChange={this.pesquisar.bind(this)} />
                     </div>
                     <Table striped bordered hover responsive className="tabela-ramais">
                         <thead>
@@ -174,7 +183,7 @@ class ListarRamais extends React.Component {
                                 <th>Email</th>
                                 <th>Setor</th>
                                 <th>Cidade</th>
-                                {this.props.usuario.token !== null && <th>Opções</th>}
+                                {!verificaToken(this.props.usuario.expiresIn) && <th>Opções</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -187,7 +196,7 @@ class ListarRamais extends React.Component {
                                     <td>{dados.email}</td>
                                     <td>{dados.setor}</td>
                                     <td>{dados.nome_cidade}</td>
-                                    {this.props.usuario.token !== null &&
+                                    {!verificaToken(this.props.usuario.expiresIn) &&
                                         <td className="tabela-td-opcoes">
                                             <OverlayTrigger
                                                 placement="top"
@@ -219,11 +228,4 @@ const mapStateToProps = state => {
     };
 }
 
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         onMudarEmpresa: () => dispatch({ type: actionTypes.MUDAR_EMPRESA, payload: 2 })
-//     };
-// };
-
 export default connect(mapStateToProps)(ListarRamais);
-// export default ListarRamais;

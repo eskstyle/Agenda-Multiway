@@ -3,7 +3,7 @@ import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import logo from '../images/logo.png';
+import logo from '../images/logo2.png';
 
 
 export const Header = () => {

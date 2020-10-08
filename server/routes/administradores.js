@@ -21,12 +21,24 @@ router.post('/api/login', (req, res) => {
         if (result.length > 0) {
             // Cria um token com 1 hora de expiração.
             let token = jwt.sign({ usuario: usuario, senha: senhaMd5 }, process.env.SECRET, { expiresIn: 60 * 60 });
-            res.status(200).send({ autenticado: true, token: token });
+            let expiresIn = jwt.verify(token, process.env.SECRET).exp;
+            res.status(200).send({ autenticado: true, token: token, expiresIn: expiresIn });
         } else {
             res.status(200).send({ autenticado: false, token: null });
         }
 
     })
 });
+
+// router.post('/api/verificaValidadeToken', (req, res) => {
+//     const token = req.headers['x-access-token'];
+
+//     jwt.verify(token, process.env.SECRET, (err, decoded) => {
+//         if(err){
+//             return res.status(401).json()
+//         }
+//     });
+
+// });
 
 module.exports = router;

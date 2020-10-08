@@ -3,6 +3,8 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import { verificaToken } from '../utils/token';
+import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
@@ -17,11 +19,16 @@ class EditarSetor extends React.Component {
             data: [],
             nomeSetor: '',
             localId: '',
-            isLoading: false
+            isLoading: false,
+            isTokenExpired: false
         }
     }
 
     componentDidMount() {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
+
         // this.setState({ isLoading: true });
 
         //BUSCA AS CIDADES PARA SER EXIBIDO NO SELECT EMPRESA
@@ -62,6 +69,10 @@ class EditarSetor extends React.Component {
 
     //FAZ UMA REQUISIÇÃO PARA NOSSO SERVER PARA SALVAR O SETOR NO BANCO DE DADOS.
     salvarSetor = () => {
+        if (verificaToken(this.props.usuario.expiresIn)) {
+            return this.setState({ isTokenExpired: true });
+        }
+
         // document.getElementsByClassName('botao-salvar').firstChild.text.data = "salvando";
         document.querySelector('.botao-salvar').innerHTML = "Salvando...";
 
@@ -111,6 +122,11 @@ class EditarSetor extends React.Component {
 
         var dados = this.state.data;
         var carregando = this.state.isLoading;
+        var isTokenExpired = this.state.isTokenExpired;
+
+        if (isTokenExpired) {
+            return <Redirect to='/logout' />;
+        }
 
         if (carregando) {
             return (

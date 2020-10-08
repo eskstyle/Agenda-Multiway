@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import * as actionTypes from '../store/actionTypes';
+import { login } from '../store/actions/index';
 import { Redirect } from 'react-router-dom';
 
 class Login extends React.Component {
@@ -30,9 +30,9 @@ class Login extends React.Component {
             })
         })
             .then(response => response.json())
-            .then(({ autenticado, token }) => {
+            .then(({ autenticado, token, expiresIn }) => {
                 if (autenticado) {
-                    this.props.onLogin(this.state.usuario, token);
+                    this.props.onLogin(this.state.usuario, token, expiresIn);
                 } else {
                     document.getElementsByClassName('alert-erro-login')[0].style.display = 'block';
                 }
@@ -77,9 +77,12 @@ const mapStateToProps = state => {
     }
 };
 
+//As duas funcoes fazem a mesma coisa, só que uma está chamando o reducer direto (a que está comentada) e a outra
+// esta usando o action do store (redux) pra chamar o reducer.
 const mapDispatchToProps = dispatch => {
     return {
-        onLogin: (usuario, token) => dispatch({ type: actionTypes.LOGIN, payload: { usuario: { usuario: usuario, token: token } } })
+        // onLogin: (usuario, token) => dispatch({ type: actionTypes.LOGIN, payload: { usuario: { usuario: usuario, token: token } } })
+        onLogin: (usuario, token, expiresIn) => dispatch(login({ usuario: { usuario: usuario, token: token, expiresIn: expiresIn } }))
     };
 };
 
