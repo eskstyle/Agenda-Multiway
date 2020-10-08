@@ -3,6 +3,7 @@ import { Button, Form, Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { login } from '../store/actions/index';
 import { Redirect } from 'react-router-dom';
+import { verificaToken } from '../utils/token';
 
 class Login extends React.Component {
     constructor(props) {
@@ -45,8 +46,7 @@ class Login extends React.Component {
     };
 
     render() {
-
-        if (this.props.usuario.token) {
+        if (!verificaToken(this.props.usuario.expiresIn)) {
             return <Redirect to="/" />;
         }
 

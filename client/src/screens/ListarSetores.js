@@ -130,7 +130,7 @@ class CadastroSetor extends React.Component {
                         <tbody>
                             {data.map((dados, index) => {
                                 return (
-                                    <tr key={index}>
+                                    <tr key={dados.id}>
                                         <td>{index + 1}</td>
                                         <td>{dados.nome}</td>
                                         <td>{dados.nome_cidade}</td>

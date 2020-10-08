@@ -188,7 +188,7 @@ class ListarRamais extends React.Component {
                         </thead>
                         <tbody>
                             {listaRamais.map((dados, index) =>
-                                <tr key={index}>
+                                <tr key={dados.id}>
                                     <td>{index + 1}</td>
                                     <td>{dados.nome}</td>
                                     <td>{dados.ramal}</td>
