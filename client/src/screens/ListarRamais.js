@@ -83,6 +83,7 @@ class ListarRamais extends React.Component {
 
     pesquisar = event => {
         let listaRamais = this.state.data;
+        console.log(event.target.value);
 
         if (event.target.value.toLowerCase().trim() === '') {
             this.setState({ listaRamais: listaRamais });
@@ -188,7 +189,7 @@ class ListarRamais extends React.Component {
                         </thead>
                         <tbody>
                             {listaRamais.map((dados, index) =>
-                                <tr key={dados.id}>
+                                <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{dados.nome}</td>
                                     <td>{dados.ramal}</td>
