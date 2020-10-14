@@ -60,8 +60,6 @@ class ListarRamais extends React.Component {
             listaRamaisCidade = this.state.data.filter(ramal => ramal.cidade_id === id);
         }
 
-        // console.log(listaRamaisCidade);
-
         if (prevState.cidadeId !== id) {
             this.setState({ listaRamais: listaRamaisCidade, cidadeId: id });
         }
@@ -83,9 +81,11 @@ class ListarRamais extends React.Component {
 
     pesquisar = event => {
         let listaRamais = this.state.data;
-        console.log(event.target.value);
 
         if (event.target.value.toLowerCase().trim() === '') {
+            if (this.state.cidadeId !== 0) {
+                listaRamais = this.state.data.filter(ramal => ramal.cidade_id === this.state.cidadeId);
+            }
             this.setState({ listaRamais: listaRamais });
         } else {
             let listaRamais = this.state.data;
