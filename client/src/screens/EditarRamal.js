@@ -147,7 +147,8 @@ class EditarRamal extends React.Component {
             fetch('/api/buscarSetores', {
                 method: 'POST',
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    'x-access-token': this.props.usuario.token
                 },
                 body: JSON.stringify({
                     cidadeId: target.value
